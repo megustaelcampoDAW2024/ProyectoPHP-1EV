@@ -1,7 +1,7 @@
 @extends('./layout/plantilla')
 @section('titulo', 'Constructora')
 @section('seccion')
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <fieldset>
             <legend><b>Formulario Modificación de Tarea</b></legend>
 
@@ -48,8 +48,6 @@
                     @endforeach
                 </select><br><br>
 
-                <label for="fecha-creacion">Fecha de Creación de la Tarea</label><br>
-                <input type="text" name="fecha-creacion" id="fecha-creacion" value="{{ $task['fecha_creacion'] ?? date('d-m-Y') }}" readonly><br><br>
                 
                 <label for="operario">Operario que Realiza la Tarea</label><br>
                 <select name="operario" id="operario">
@@ -60,14 +58,17 @@
                     <option value="4" {{ ($_POST) ? ($utiles->valorPost('operario') == '4' ? 'selected' : '') : ($task['operario'] == '4' ? 'selected' : '') }}>Juan Rodriguez</option>
                 </select><br><br>
             @endif
-            
+                
             <label for="estado">Estado de la Tarea</label><br>
             <input type="radio" name="estado" id="estado" value="B" {{ ($_POST) ? ($utiles->valorPost('estado') == 'B' ? 'checked' : '') : ($task['estado'] == 'B' ? 'checked' : '') }}>Esperando a Ser Aprobada<br><br>
             <input type="radio" name="estado" id="estado" value="P" {{ ($_POST) ? ($utiles->valorPost('estado') == 'P' ? 'checked' : '') : ($task['estado'] == 'P' ? 'checked' : '') }}>Pendiente<br><br>
             <input type="radio" name="estado" id="estado" value="R" 
             {{ ($_POST) ? ($utiles->valorPost('estado') == 'R' || $utiles->valorPost('estado') == '' ? 'checked' : '') : ($task['estado'] == 'R' || $task['estado'] == '' ? 'checked' : '') }}>Realizada<br><br>
             <input type="radio" name="estado" id="estado" value="C" {{ ($_POST) ? ($utiles->valorPost('estado') == 'C' ? 'checked' : '') : ($task['estado'] == 'C' ? 'checked' : '') }}>Cancelada<br><br>
-
+            
+            <label for="fecha-creacion">Fecha de Creación de la Tarea</label><br>
+            <input type="text" name="fecha-creacion" id="fecha-creacion" value="{{ $task['fecha_creacion'] ?? date('d-m-Y') }}" readonly><br><br>
+            
             <label {{ ($_POST) ? $utiles->colorLabel('fecha-realizacion', $errores) : '' }} for="fecha-realizacion">
                 @php $utiles->contenidoLabel('fecha-realizacion', 'Fecha de Realizacion de la Tarea', $errores) @endphp</label><br>
             <input type="text" name="fecha-realizacion" id="fecha-realizacion" value="{{ ($_POST) ? $utiles->valorPost('fecha-realizacion') : ($task['fecha_realizacion'] ?? '') }}"><br><br>
@@ -79,11 +80,17 @@
             <textarea name="anotaciones-posteriores" id="anotaciones-posteriores">{{ ($_POST) ? $utiles->valorPost('anotaciones-posteriores') : ($task['anotaciones_posteriores'] ?? '') }}</textarea><br><br>
 
             <label for="fich-resu">Fichero Resumen de las Tareas Realizadas</label><br>
-            <input type="file" name="fich-resu" id="fich-resu" value="{{ ($_POST) ? $utiles->valorPost('fich-resu') : ($task['fich_resu'] ?? '') }}"><br><br>
+            @if(isset($task['fich_resu']))
+                <p>Archivo actual: {{ $task['fich_resu'] }} --- <a href="{{miUrl("eliminarFichResu/{$id}")}}">ELIMINAR</a></p>
+            @endif
+            <input type="file" name="fich-resu" id="fich-resu"><br><br><br>
 
             <label for="foto">Foto de las Tareas Realizadas</label><br>
-            <input type="file" name="foto" id="foto" value="{{ ($_POST) ? $utiles->valorPost('foto') : ($task['foto'] ?? '') }}"><br><br>
-
+            @if(isset($task['foto']))
+                <p>Archivo actual: {{ $task['foto'] }} --- <a href="{{miUrl("eliminarFoto/{$id}")}}">ELIMINAR</a></p>
+            @endif
+            <input type="file" name="foto" id="foto"><br><br>
+            
             <button type="submit">Actualizar</button>
         </fieldset>
     </form>

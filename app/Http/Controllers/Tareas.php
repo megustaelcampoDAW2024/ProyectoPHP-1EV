@@ -93,13 +93,43 @@ class Tareas extends Controller
                 if (!$errores->HayErrores()) {
                     $updatedTask = new Task();
 
-                    dbModel::updateTask($updatedTask, $id);
+                    if (isset($_FILES['fich-resu']) && $_FILES['fich-resu']['error'] == UPLOAD_ERR_OK) {//Guardar el archivo si existe
+                        $fichResu = $_FILES['fich-resu'];
+                        $fichResuName = time() . '_' . basename($fichResu['name']);
+                        $dir = __DIR__ . '/../../../uploads/';
+                        move_uploaded_file($fichResu['tmp_name'], $dir . $fichResuName);
+                        $updatedTask->fich_resu = $fichResuName;
+                    }
+                    if($task['fich_resu'] != null && $_FILES['fich-resu']['name'] == ''){//Si no se sube un archivo, mantener el que ya estaba
+                        $updatedTask->fich_resu = $task['fich_resu'];
+                    }elseif($task['fich_resu'] != null && $_FILES['fich-resu']['name'] != ''){//Si se sube un archivo, borrar el anterior
+                        unlink(__DIR__ . '/../../../uploads/' . $task['fich_resu']);
+                    }
+
+                    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {//Guardar la foto si existe
+                        $foto = $_FILES['foto'];
+                        $fotoName = time() . '_' . basename($foto['name']);
+                        $dir = __DIR__ . '/../../../uploads/';
+                        move_uploaded_file($foto['tmp_name'], $dir . $fotoName);
+                        $updatedTask->foto = $fotoName;
+                    }
+                    if($task['foto'] != null && $_FILES['foto']['name'] == ''){//Si no se sube un archivo, mantener el que ya estaba
+                        $updatedTask->foto = $task['foto'];
+                    }elseif($task['foto'] != null && $_FILES['foto']['name'] != ''){//Si se sube un archivo, borrar el anterior
+                        unlink(__DIR__ . '/../../../uploads/' . $task['foto']);
+                    }
+                    
+                    if($_SESSION['status'] == 'A'){
+                        dbModel::updateTaskAdmin($updatedTask, $id);
+                    }elseif($_SESSION['status'] == 'O'){
+                        dbModel::updateTaskOperario($updatedTask, $id);
+                    }
                     myRedirect("listarTareas");
                 } else {
-                    return view('modificarTarea', compact('errores', 'utiles', 'provincias', 'task'));
+                    return view('modificarTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
                 }
             } else {
-                return view('modificarTarea', compact('errores', 'utiles', 'provincias', 'task'));
+                return view('modificarTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
             }
         }else{
             myRedirect("logIn");
@@ -112,7 +142,7 @@ class Tareas extends Controller
             $task = dbModel::getTaskById($id);
             return view('eliminarTarea', compact('task', 'id'));
         }else{
-            myRedirect("logIn");
+            myRedirect("listarTareas");
         }
     }
 
@@ -122,7 +152,7 @@ class Tareas extends Controller
             dbModel::deleteTask($id);
             myRedirect("listarTareas");
         }else{
-            myRedirect("logIn");
+            myRedirect("listarTareas");
         }
     }
 
@@ -152,6 +182,36 @@ class Tareas extends Controller
                 return view('logIn', compact('utiles', 'logError'));
             }
         }
+    }
+
+    public function eliminarFoto($id)
+    {
+        if($this->sessionUsuario->isLogged()){
+            $task = dbModel::getTaskById($id);
+            unlink(__DIR__ . '/../../../uploads/' . $task['foto']);
+            dbModel::deleteFicheros("foto", $id);
+            myRedirect("modificarTarea/$id");
+        }else{
+            myRedirect("logIn");
+        }
+    }
+
+    public function eliminarFichResu($id)
+    {
+        if($this->sessionUsuario->isLogged()){
+            $task = dbModel::getTaskById($id);
+            unlink(__DIR__ . '/../../../uploads/' . $task['fich_resu']);
+            dbModel::deleteFicheros("fich_resu", $id);
+            myRedirect("modificarTarea/$id");
+        }else{
+            myRedirect("logIn");
+        }
+    }
+
+    public function logOut()
+    {
+        $this->sessionUsuario->destroy();
+        myRedirect("logIn");
     }
 
 }

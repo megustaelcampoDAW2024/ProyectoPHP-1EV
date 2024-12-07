@@ -99,7 +99,7 @@ class dbModel extends Model
         return $result;
     }
 
-    public static function updateTask($updatedTask, $id)
+    public static function updateTaskAdmin($updatedTask, $id)
     {
         $db = SingletonDB::getInstance();
         $sql = 
@@ -130,6 +130,27 @@ class dbModel extends Model
             (($updatedTask->fecha_creacion !== null && $updatedTask->fecha_creacion != '') ? "'$updatedTask->fecha_creacion'" : "'1111-11-11'") . ", " .
             "operario = " . 
             (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . ", " .
+            "fecha_realizacion = " . 
+            (($updatedTask->fecha_realizacion !== null && $updatedTask->fecha_realizacion != '') ? "'$updatedTask->fecha_realizacion'" : "NULL") . ", " .
+            "anotaciones_anteriores = " . 
+            (($updatedTask->anotaciones_anteriores !== null && $updatedTask->anotaciones_anteriores != '') ? "'$updatedTask->anotaciones_anteriores'" : "NULL") . ", " .
+            "anotaciones_posteriores = " . 
+            (($updatedTask->anotaciones_posteriores !== null && $updatedTask->anotaciones_posteriores != '') ? "'$updatedTask->anotaciones_posteriores'" : "NULL") . ", " .
+            "fich_resu = " . 
+            (($updatedTask->fich_resu !== null && $updatedTask->fich_resu != '') ? "'$updatedTask->fich_resu'" : "NULL") . ", " .
+            "foto = " . 
+            (($updatedTask->foto !== null && $updatedTask->foto != '') ? "'$updatedTask->foto'" : "NULL") . "
+            WHERE task_id = $id";
+        $result = $db->conn->query($sql);
+    }
+
+    public static function updateTaskOperario($updatedTask, $id)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = 
+        "UPDATE task 
+        SET estado = " . 
+            (($updatedTask->estado !== null && $updatedTask->estado != '') ? "'$updatedTask->estado'" : "NULL") . ", " .
             "fecha_realizacion = " . 
             (($updatedTask->fecha_realizacion !== null && $updatedTask->fecha_realizacion != '') ? "'$updatedTask->fecha_realizacion'" : "NULL") . ", " .
             "anotaciones_anteriores = " . 
@@ -186,6 +207,16 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
         $user = $result->fetch(\PDO::FETCH_ASSOC);
         return $user;
+    }
+
+    public static function deleteFicheros($campo, $id)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = 
+        "UPDATE task 
+        SET $campo = NULL
+        WHERE task_id = $id";
+        $result = $db->conn->query($sql);
     }
 
 }

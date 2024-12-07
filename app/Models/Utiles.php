@@ -166,4 +166,5 @@ class Utiles extends Model
         // Si todavía no se ha verificado devuelve error
         return false;
     }
+    
 }

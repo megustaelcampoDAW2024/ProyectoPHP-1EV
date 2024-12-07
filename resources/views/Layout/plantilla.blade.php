@@ -7,6 +7,7 @@
     </head>
     <body>
         <header>
+            <a href="{{miUrl("logOut")}}">Log Out</a>
             <h1>@yield('titulo')</h1>
         </header>
         <nav>
