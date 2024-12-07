@@ -82,7 +82,6 @@
             <input type="file" name="foto" id="foto" value="{{ $utiles->valorPost('foto') }}"><br><br>
 
             <button type="submit">Enviar</button>
-            <button type="reset">Reset</button>
         </fieldset>
     </form>
 @endsection

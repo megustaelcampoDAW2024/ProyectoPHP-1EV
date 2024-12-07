@@ -40,9 +40,9 @@ class Utiles extends Model
                     else if(!$this->validarEmail($valor))
                         $errores -> AnotaError($name, "El eMail es Incorrecto<br>[ejemplo@ejemplo.extensión]");
                 }if($name == "fecha-realizacion")
-                if(!$this->valorPost($name) == '')
-                    if(!$this->validarFechaPosterior($_POST['fecha-creacion'], $valor))
-                        $errores -> AnotaError($name, "La Fecha es Incorrecta <br>[DD/MM/AAAA]<br>[DD-MM-AAAA]");
+                    if(!$this->valorPost($name) == '')
+                        if(!$this->validarFechaPosterior($_POST['fecha-creacion'], $valor))
+                            $errores -> AnotaError($name, "La Fecha es Incorrecta <br>[DD/MM/AAAA]<br>[DD-MM-AAAA]");
             }
         }
     }
