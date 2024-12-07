@@ -13,16 +13,16 @@ La aplicación utiliza sesiones para manejar la autenticación de usuarios y ase
 
 ### Estructura del Proyecto:
 
- - Controladores: Manejan la lógica de la aplicación y las interacciones del usuario.
- - Modelos: Representan los datos y las operaciones de la base de datos.
- - Vistas: Plantillas Blade que generan la interfaz de usuario.
- - Rutas: Definen los endpoints de la aplicación y los controladores asociados.
- - Sesiones: Utilizadas para manejar la autenticación y mantener el estado del usuario.
+ - **Controladores**: Manejan la lógica de la aplicación y las interacciones del usuario.
+ - **Modelos**: Representan los datos y las operaciones de la base de datos.
+ - **Vistas**: Plantillas Blade que generan la interfaz de usuario.
+ - **Rutas**: Definen los endpoints de la aplicación y los controladores asociados.
+ - **Sesiones**: Utilizadas para manejar la autenticación y mantener el estado del usuario.
 
 ### Tecnologías Utilizadas:
 
- - Laravel: Framework PHP para el desarrollo de aplicaciones web.
- - Blade: Motor de plantillas de Laravel.
- - PHP: Lenguaje de programación del lado del servidor.
- - HTML/CSS/JavaScript: Tecnologías para la interfaz de usuario.
- - MySQL: Base de datos para almacenar la información de las tareas y usuarios.
+ - **Laravel**: Framework PHP para el desarrollo de aplicaciones web.
+ - **Blade**: Motor de plantillas de Laravel.
+ - **PHP**: Lenguaje de programación del lado del servidor.
+ - **HTML/CSS/JavaScript**: Tecnologías para la interfaz de usuario.
+ - **MySQL**: Base de datos para almacenar la información de las tareas y usuarios.
