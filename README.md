@@ -1,7 +1,7 @@
 # Proyecto PHP 1a Evaluación
 ## Aplicación Web de Gestión de Tareas para una Constructora
 
-## Este proyecto es una aplicación web desarrollada con el framework Laravel, diseñada para gestionar las tareas de una constructora. La aplicación permite a los usuarios autenticados realizar diversas operaciones relacionadas con la gestión de tareas, tales como:
+### Este proyecto es una aplicación web desarrollada con el framework Laravel, diseñada para gestionar las tareas de una constructora. La aplicación permite a los usuarios autenticados realizar diversas operaciones relacionadas con la gestión de tareas, tales como:
 
  - **Inicio de Sesión**: Los usuarios pueden iniciar sesión en la aplicación utilizando sus credenciales.
  - **Listado de Tareas**: Visualización de todas las tareas registradas, con la opción de filtrar tareas incompletas.
@@ -11,7 +11,7 @@
  - **Detalles de Tareas**: Visualización de los detalles completos de una tarea específica.
 La aplicación utiliza sesiones para manejar la autenticación de usuarios y asegurar que solo los usuarios autenticados puedan acceder a ciertas funcionalidades.
 
-## Estructura del Proyecto:
+### Estructura del Proyecto:
 
  - Controladores: Manejan la lógica de la aplicación y las interacciones del usuario.
  - Modelos: Representan los datos y las operaciones de la base de datos.
@@ -19,7 +19,7 @@ La aplicación utiliza sesiones para manejar la autenticación de usuarios y ase
  - Rutas: Definen los endpoints de la aplicación y los controladores asociados.
  - Sesiones: Utilizadas para manejar la autenticación y mantener el estado del usuario.
 
-## Tecnologías Utilizadas:
+### Tecnologías Utilizadas:
 
  - Laravel: Framework PHP para el desarrollo de aplicaciones web.
  - Blade: Motor de plantillas de Laravel.
