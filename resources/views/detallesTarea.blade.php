@@ -80,7 +80,7 @@
             <td>
                 {{$task['foto']}}<br>
                 @if($task['foto'])
-                    <img src="{!!'../../uploads/'.$task['foto']!!}" alt="Foto" width="400px">
+                    <img src="{!!'../../storage/app/public/'.$task['foto']!!}" alt="Foto" width="400px">
                 @endif
             </td>
         </tr>
