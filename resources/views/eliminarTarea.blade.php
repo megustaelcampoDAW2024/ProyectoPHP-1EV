@@ -4,6 +4,10 @@
     <h3>¿Desea Eliminar la Tarea?</h3>
     <table border="1" style="border-collapse: collapse">
         <tr>
+            <th style="background-color: red;"><a href="{!!miUrl("eliminarTarea/{$id}")!!}">Eliminar Tarea</a></th>
+            <th style="background-color: green;"><a href="{!!miUrl("detallesTarea/{$id}")!!}">Cancelar</a></th>
+        </tr>
+        <tr>
             <td>Id tarea</td>
             <td>{{$task['task_id']}}</td>
         </tr>    
@@ -73,15 +77,23 @@
         </tr>    
         <tr>
             <td>Fichero Resumen</td>
-            <td>{{$task['fich_resu']}}</td>
+            <td>
+                @if($task['fich_resu'])
+                    <a href="{!!'../../storage/app/public/'.$task['fich_resu']!!}" target="_blank">CONSULTAR</a> | 
+                    <a href="{!!'../../storage/app/public/'.$task['fich_resu']!!}" download>DESCARGAR</a><br>
+                    <embed src="{!!'../../storage/app/public/'.$task['fich_resu']!!}" width="400px" height="600px">
+                @endif
+            </td>
         </tr>    
         <tr>
             <td>Foto</td>
-            <td>{{$task['foto']}}</td>
-        </tr>
-        <tr>
-            <th style="background-color: red;"><a href="{!!miUrl("eliminarTarea/{$id}")!!}">Eliminar Tarea</a></th>
-            <th style="background-color: green;"><a href="{!!miUrl("detallesTarea/{$id}")!!}">Cancelar</a></th>
+            <td>
+                @if($task['foto'])
+                    <a href="{!!'../../storage/app/public/'.$task['foto']!!}" target="_blank">CONSULTAR</a> | 
+                    <a href="{!!'../../storage/app/public/'.$task['foto']!!}" download>DESCARGAR</a><br>
+                    <img src="{!!'../../storage/app/public/'.$task['foto']!!}" alt="Foto" width="400px">
+                @endif
+            </td>
         </tr>
     </table>
 @endsection

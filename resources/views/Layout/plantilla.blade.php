@@ -7,8 +7,7 @@
     </head>
     <body>
         <header>
-            <p>Usuario: {{$_SESSION['usuario']}} | @if($_SESSION['status'] == 'A') Asministrador @else Operario @endif</p>
-            <a href="{{miUrl("logOut")}}">Log Out</a>
+            <p style="text-align: right;">Usuario: {{$_SESSION['usuario']}} | @if($_SESSION['status'] == 'A') Administrador @else Operario @endif | <a href="{{miUrl('logOut')}}">Log Out</a></p>
             <h1>@yield('titulo')</h1>
         </header>
         <nav>
