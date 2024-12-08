@@ -66,14 +66,30 @@ class Tareas extends Controller
             if($_POST){
                 $utiles -> filtroForm($errores);
                 if(!$errores -> HayErrores()){
+
+                    if (isset($_FILES['fich-resu']) && $_FILES['fich-resu']['error'] == UPLOAD_ERR_OK) {//Guardar el archivo si existe
+                        $fichResu = $_FILES['fich-resu'];
+                        $fichResuName = time() . '_' . basename($fichResu['name']);
+                        $dir = __DIR__ . '/../../../uploads/';
+                        move_uploaded_file($fichResu['tmp_name'], $dir . $fichResuName);
+                        $_POST['fich-resu'] = $fichResuName;
+                    }
+
+                    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {//Guardar la foto si existe
+                        $foto = $_FILES['foto'];
+                        $fotoName = time() . '_' . basename($foto['name']);
+                        $dir = __DIR__ . '/../../../uploads/';
+                        move_uploaded_file($foto['tmp_name'], $dir . $fotoName);
+                        $_POST['foto'] = $fotoName;
+                    }
                     $task = new Task();
                     dbModel::insertTask($task);
                     myRedirect("listarTareas");
                 }else{
-                    return view('crearTarea', compact('errores', 'utiles', 'provincias'));
+                    return view('formTarea', compact('errores', 'utiles', 'provincias'));
                 }
             }else{
-                return view('crearTarea', compact('errores', 'utiles', 'provincias'));
+                return view('formTarea', compact('errores', 'utiles', 'provincias'));
             }
         }else{
             myRedirect("logIn");
@@ -126,10 +142,10 @@ class Tareas extends Controller
                     }
                     myRedirect("listarTareas");
                 } else {
-                    return view('modificarTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
+                    return view('formTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
                 }
             } else {
-                return view('modificarTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
+                return view('formTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
             }
         }else{
             myRedirect("logIn");
@@ -149,10 +165,17 @@ class Tareas extends Controller
     public function eliminarTarea($id)
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A'){
+            $task = dbModel::getTaskById($id);
+            if ($task['foto']) {//Borrar la foto si existe
+                unlink(__DIR__ . '/../../../uploads/' . $task['foto']);
+            }
+            if ($task['fich_resu']) {//Borrar el archivo si existe
+                unlink(__DIR__ . '/../../../uploads/' . $task['fich_resu']);
+            }
             dbModel::deleteTask($id);
             myRedirect("listarTareas");
-        }else{
-            myRedirect("listarTareas");
+        } else {
+            myRedirect("logIn");
         }
     }
 
@@ -164,21 +187,19 @@ class Tareas extends Controller
             $logError = false;
             $utiles = new Utiles();
             if($_POST){
-                echo "hay post";
                 if(dbModel::checkUser($_POST['user'], $_POST['pass'])){
-                    echo ", existe";
                     $user = dbModel::getUser($_POST['user'], $_POST['pass']);
-                    $_SESSION['usuario'] = $user['usuario'];
-                    $_SESSION['password'] = $user['password'];
-                    $_SESSION['status'] = $user['status'];
+                    $this->sessionUsuario->logIn($user['usuario'], $user['password'], $user['status']);
+                    if(isset($_POST['remember']) && $_POST['remember'] == 'on'){ //solo si el checkbox está marcado
+                        setcookie('usuario', $_POST['user'], time() + (86400 * 3), "/"); // 86400 = 1 day
+                        setcookie('password', $_POST['pass'], time() + (86400 * 3), "/");
+                    }
                     myRedirect("inicio");
                 }else{
-                    echo ", no existe";
                     $logError = true;
                     return view('logIn', compact('utiles','logError'));
                 }
             }else{
-                echo "no hay post";
                 return view('logIn', compact('utiles', 'logError'));
             }
         }

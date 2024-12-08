@@ -4,10 +4,6 @@
     <h3>¿Desea Eliminar la Tarea?</h3>
     <table border="1" style="border-collapse: collapse">
         <tr>
-            <th style="background-color: red;"><a href="{!!miUrl("eliminarTarea/{$id}")!!}">Eliminar Tarea</a></th>
-            <th style="background-color: green;"><a href="{!!miUrl("listarTareas")!!}">Cancelar</a></th>
-        </tr>
-        <tr>
             <td>Id tarea</td>
             <td>{{$task['task_id']}}</td>
         </tr>    
@@ -82,6 +78,10 @@
         <tr>
             <td>Foto</td>
             <td>{{$task['foto']}}</td>
+        </tr>
+        <tr>
+            <th style="background-color: red;"><a href="{!!miUrl("eliminarTarea/{$id}")!!}">Eliminar Tarea</a></th>
+            <th style="background-color: green;"><a href="{!!miUrl("detallesTarea/{$id}")!!}">Cancelar</a></th>
         </tr>
     </table>
 @endsection

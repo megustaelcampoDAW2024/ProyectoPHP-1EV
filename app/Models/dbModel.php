@@ -87,15 +87,11 @@ class dbModel extends Model
             (($task->poblacion !== null && $task->poblacion != '') ? "'$task->poblacion'" : "NULL") . ", " . 
             (($task->codigo_post !== null && $task->codigo_post != '') ? "'$task->codigo_post'" : "NULL") . ", " . 
             (($task->provincia !== null && $task->provincia != 0) ? "'$task->provincia'" : "NULL") . ", " . 
-            (($task->estado !== null && $task->estado != '') ? "'$task->estado'" : "NULL") . ", " . 
+            "NULL, " . 
             (($task->fecha_creacion !== null && $task->fecha_creacion != '') ? "'$task->fecha_creacion'" : "'1111-11-11'") . ", " . 
             (($task->operario !== null && $task->operario != 0) ? "'$task->operario'" : "NULL") . ", " . 
-            (($task->fecha_realizacion !== null && $task->fecha_realizacion != '') ? "'$task->fecha_realizacion'" : "NULL") . ", " . 
-            (($task->anotaciones_anteriores !== null && $task->anotaciones_anteriores != '') ? "'$task->anotaciones_anteriores'" : "NULL") . ", " . 
-            (($task->anotaciones_posteriores !== null && $task->anotaciones_posteriores != '') ? "'$task->anotaciones_posteriores'" : "NULL") . ", " . 
-            (($task->fich_resu !== null && $task->fich_resu != '') ? "'$task->fich_resu'" : "NULL") . ", " . 
-            (($task->foto !== null && $task->foto != '') ? "'$task->foto'" : "NULL") .  ")";
-            $result = $db->conn->query($sql);
+            "NULL, NULL, NULL, NULL, NULL)";
+        $result = $db->conn->query($sql);
         return $result;
     }
 
@@ -124,22 +120,10 @@ class dbModel extends Model
             (($updatedTask->codigo_post !== null && $updatedTask->codigo_post != '') ? "'$updatedTask->codigo_post'" : "NULL") . ", " . 
             "provincia = " . 
             (($updatedTask->provincia !== null && $updatedTask->provincia != 0) ? "'$updatedTask->provincia'" : "NULL") . ", " . 
-            "estado = " . 
-            (($updatedTask->estado !== null && $updatedTask->estado != '') ? "'$updatedTask->estado'" : "NULL") . ", " .
             "fecha_creacion = " . 
-            (($updatedTask->fecha_creacion !== null && $updatedTask->fecha_creacion != '') ? "'$updatedTask->fecha_creacion'" : "'1111-11-11'") . ", " .
+            (($updatedTask->fecha_creacion !== null && $updatedTask->fecha_creacion != '') ? "'$updatedTask->fecha_creacion'" : "'1111-11-11'") . ", " . 
             "operario = " . 
-            (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . ", " .
-            "fecha_realizacion = " . 
-            (($updatedTask->fecha_realizacion !== null && $updatedTask->fecha_realizacion != '') ? "'$updatedTask->fecha_realizacion'" : "NULL") . ", " .
-            "anotaciones_anteriores = " . 
-            (($updatedTask->anotaciones_anteriores !== null && $updatedTask->anotaciones_anteriores != '') ? "'$updatedTask->anotaciones_anteriores'" : "NULL") . ", " .
-            "anotaciones_posteriores = " . 
-            (($updatedTask->anotaciones_posteriores !== null && $updatedTask->anotaciones_posteriores != '') ? "'$updatedTask->anotaciones_posteriores'" : "NULL") . ", " .
-            "fich_resu = " . 
-            (($updatedTask->fich_resu !== null && $updatedTask->fich_resu != '') ? "'$updatedTask->fich_resu'" : "NULL") . ", " .
-            "foto = " . 
-            (($updatedTask->foto !== null && $updatedTask->foto != '') ? "'$updatedTask->foto'" : "NULL") . "
+            (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . "
             WHERE task_id = $id";
         $result = $db->conn->query($sql);
     }

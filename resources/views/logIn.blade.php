@@ -13,11 +13,15 @@
             @else
                 <h3 style="color: red">Usuario o Contraseña Incorrectos</h3>
             @endif
-            <label for="user">Ususario</label><br>
-            <input type="text" name="user" id="user" value="{{ $utiles->valorPost('user') }}"><br>
+            <label for="user">Usuario</label><br>
+            <input type="text" name="user" id="user" value="{{ $utiles->valorPost('user') !== '' ? $utiles->valorPost('user') : (isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : '') }}"><br><br>
+            
             <label for="pass">Password</label><br>
-            <input type="password" name="pass" id="pass" value="{{ $utiles->valorPost('pass') }}"><br>
-            <checkbox name="recordar">Recordar Usuario</checkbox><br>
+            <input type="password" name="pass" id="pass" value="{{ $utiles->valorPost('pass') !== '' ? $utiles->valorPost('pass') : (isset($_COOKIE['password']) ? $_COOKIE['password'] : '') }}"><br><br>
+
+            <label for="remember">Recordar Usuario</label>
+            <input type="checkbox" name="remember" id="remember" {{ $utiles->valorPost('remember') ? 'checked' : '' }}><br><br>
+            
             <button type="submit">Log In</button>
         </form>
     </body>

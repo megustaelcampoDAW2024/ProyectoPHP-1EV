@@ -7,6 +7,7 @@
     </head>
     <body>
         <header>
+            <p>Usuario: {{$_SESSION['usuario']}} | @if($_SESSION['status'] == 'A') Asministrador @else Operario @endif</p>
             <a href="{{miUrl("logOut")}}">Log Out</a>
             <h1>@yield('titulo')</h1>
         </header>
