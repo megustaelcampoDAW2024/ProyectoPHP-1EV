@@ -140,7 +140,7 @@ class Tareas extends Controller
                     }elseif($_SESSION['status'] == 'O'){
                         dbModel::updateTaskOperario($updatedTask, $id);
                     }
-                    myRedirect("listarTareas");
+                    myRedirect("detallesTarea/$id");
                 } else {
                     return view('formTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
                 }

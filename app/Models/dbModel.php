@@ -52,8 +52,12 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
         $task = $result->fetch(\PDO::FETCH_ASSOC);
         if ($task) {
-            $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
-            $task['fecha_realizacion'] = date('d-m-Y', strtotime($task['fecha_realizacion']));
+            if($task['fecha_creacion'] != null) {
+                $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
+            }
+            if($task['fecha_realizacion'] != null) {
+                $task['fecha_realizacion'] = date('d-m-Y', strtotime($task['fecha_realizacion']));
+            }
         }
         return $task;
     }
@@ -120,8 +124,6 @@ class dbModel extends Model
             (($updatedTask->codigo_post !== null && $updatedTask->codigo_post != '') ? "'$updatedTask->codigo_post'" : "NULL") . ", " . 
             "provincia = " . 
             (($updatedTask->provincia !== null && $updatedTask->provincia != 0) ? "'$updatedTask->provincia'" : "NULL") . ", " . 
-            "fecha_creacion = " . 
-            (($updatedTask->fecha_creacion !== null && $updatedTask->fecha_creacion != '') ? "'$updatedTask->fecha_creacion'" : "'1111-11-11'") . ", " . 
             "operario = " . 
             (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . "
             WHERE task_id = $id";

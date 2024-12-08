@@ -56,12 +56,12 @@
             <td>{{$task['estado']}}</td>
         </tr>    
         <tr>
-            <td>Fecha Creación</td>
-            <td>{{$task['fecha_creacion']}}</td>
-        </tr>    
-        <tr>
             <td>Operario</td>
             <td>{{$task['operario']}}</td>
+        </tr>
+        <tr>
+            <td>Fecha Creación</td>
+            <td>{{$task['fecha_creacion']}}</td>
         </tr>    
         <tr>
             <td>Fecha Realización</td>
@@ -79,6 +79,7 @@
             <td>Fichero Resumen</td>
             <td>
                 @if($task['fich_resu'])
+                    <p>Nombre Archivo:<br> {{$task['fich_resu']}}</p>
                     <a href="{!!'../../storage/app/public/'.$task['fich_resu']!!}" target="_blank">CONSULTAR</a> | 
                     <a href="{!!'../../storage/app/public/'.$task['fich_resu']!!}" download>DESCARGAR</a><br>
                     <embed src="{!!'../../storage/app/public/'.$task['fich_resu']!!}" width="400px" height="600px">
@@ -89,6 +90,7 @@
             <td>Foto</td>
             <td>
                 @if($task['foto'])
+                    <p>Nombre Archivo:<br> {{$task['foto']}}</p>
                     <a href="{!!'../../storage/app/public/'.$task['foto']!!}" target="_blank">CONSULTAR</a> | 
                     <a href="{!!'../../storage/app/public/'.$task['foto']!!}" download>DESCARGAR</a><br>
                     <img src="{!!'../../storage/app/public/'.$task['foto']!!}" alt="Foto" width="400px">

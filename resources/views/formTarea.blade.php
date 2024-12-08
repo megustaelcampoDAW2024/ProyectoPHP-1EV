@@ -59,8 +59,16 @@
                     <option value="4" {{ ($_POST) ? ($utiles->valorPost('operario') == '4' ? 'selected' : '') : (isset($task) && $task['operario'] == '4' ? 'selected' : '') }}>Juan Rodriguez</option>
                 </select><br><br>
             @endif
+
+            <label for="fecha-creacion">Fecha de Creación de la Tarea</label><br>
+            <input type="text" name="fecha-creacion" id="fecha-creacion" value="{{ date('d-m-Y') }}" readonly><br><br>
                 
             @if($_SESSION['status'] == 'O')
+                
+                <label {{ ($_POST) ? $utiles->colorLabel('fecha-realizacion', $errores) : '' }} for="fecha-realizacion">
+                    @php $utiles->contenidoLabel('fecha-realizacion', 'Fecha de Realizacion de la Tarea', $errores) @endphp</label><br>
+                <input type="text" name="fecha-realizacion" id="fecha-realizacion" value="{{ ($_POST) ? $utiles->valorPost('fecha-realizacion') : ($task['fecha_realizacion'] ?? '') }}"><br><br>
+
                 <label for="estado">Estado de la Tarea</label><br>
                 <input type="radio" name="estado" id="estado" value="B" {{ ($_POST) ? ($utiles->valorPost('estado') == 'B' ? 'checked' : '') : (isset($task) && $task['estado'] == 'B' ? 'checked' : '') }}>Esperando a Ser Aprobada<br><br>
                 <input type="radio" name="estado" id="estado" value="P" {{ ($_POST) ? ($utiles->valorPost('estado') == 'P' ? 'checked' : '') : (isset($task) && $task['estado'] == 'P' ? 'checked' : '') }}>Pendiente<br><br>
@@ -68,12 +76,6 @@
                 {{ ($_POST && ($utiles->valorPost('estado') == 'R' || $utiles->valorPost('estado') == '')) || (!$_POST && (!isset($task) || $task['estado'] == 'R' || $task['estado'] == '')) ? 'checked' : '' }}>Realizada<br><br>
                 <input type="radio" name="estado" id="estado" value="C" {{ ($_POST) ? ($utiles->valorPost('estado') == 'C' ? 'checked' : '') : (isset($task) && $task['estado'] == 'C' ? 'checked' : '') }}>Cancelada<br><br>
                 
-                <label for="fecha-creacion">Fecha de Creación de la Tarea</label><br>
-                <input type="text" name="fecha-creacion" id="fecha-creacion" value="{{ $task['fecha_creacion'] ?? date('d-m-Y') }}" readonly><br><br>
-                
-                <label {{ ($_POST) ? $utiles->colorLabel('fecha-realizacion', $errores) : '' }} for="fecha-realizacion">
-                    @php $utiles->contenidoLabel('fecha-realizacion', 'Fecha de Realizacion de la Tarea', $errores) @endphp</label><br>
-                <input type="text" name="fecha-realizacion" id="fecha-realizacion" value="{{ ($_POST) ? $utiles->valorPost('fecha-realizacion') : ($task['fecha_realizacion'] ?? '') }}"><br><br>
 
                 <label for="anotaciones-anteriores">Anotaciones Anteriores a la Tarea</label><br>
                 <textarea name="anotaciones-anteriores" id="anotaciones-anteriores">{{ ($_POST) ? $utiles->valorPost('anotaciones-anteriores') : ($task['anotaciones_anteriores'] ?? '') }}</textarea><br><br>
@@ -85,13 +87,13 @@
                 @if(isset($task['fich_resu']))
                     <p>Archivo actual: {{ $task['fich_resu'] }} --- <a href="{{miUrl("eliminarFichResu/{$id}")}}">ELIMINAR</a></p>
                 @endif
-                <input type="file" name="fich-resu" id="fich-resu"><br><br><br>
+                <input type="file" name="fich-resu" id="fich-resu" accept=".pdf"><br><br><br>
 
                 <label for="foto">Foto de las Tareas Realizadas</label><br>
                 @if(isset($task['foto']))
                     <p>Archivo actual: {{ $task['foto'] }} --- <a href="{{miUrl("eliminarFoto/{$id}")}}">ELIMINAR</a></p>
                 @endif
-                <input type="file" name="foto" id="foto"><br><br>
+                <input type="file" name="foto" id="foto" accept=".jpg, .jpeg, .png"><br><br>
             @endif
             <button type="submit">{{ isset($task) ? 'Actualizar' : 'Enviar' }}</button>
         </fieldset>
