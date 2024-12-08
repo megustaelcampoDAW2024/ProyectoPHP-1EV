@@ -52,4 +52,13 @@
             @endforeach
         </tbody>
     </table>
+    <div class="pagination">
+        <a href="?page=1" style="{{ $page == 1 ? 'pointer-events: none; color: gray;' : '' }}">Primera</a> | 
+        <a href="?page={{ $page - 1 }}" style="{{ $page == 1 ? 'pointer-events: none; color: gray;' : '' }}">Anterior</a> | 
+
+        <span>Página {{ $page }} de {{ $totalPages }}</span> | 
+
+        <a href="?page={{ $page + 1 }}" style="{{ $page == $totalPages ? 'pointer-events: none; color: gray;' : '' }}">Siguiente</a> | 
+        <a href="?page={{ $totalPages }}" style="{{ $page == $totalPages ? 'pointer-events: none; color: gray;' : '' }}">Última</a>
+    </div>
 @endsection

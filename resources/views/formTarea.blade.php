@@ -61,7 +61,7 @@
             @endif
 
             <label for="fecha-creacion">Fecha de Creación de la Tarea</label><br>
-            <input type="text" name="fecha-creacion" id="fecha-creacion" value="{{ date('d-m-Y') }}" readonly><br><br>
+            <input type="text" name="fecha-creacion" id="fecha-creacion" value="{{($_POST) ? $utiles->valorPost('fecha-creacion') : (isset($task) ? $task['fecha_creacion'] : date('d-m-Y'))}}" readonly><br><br>
                 
             @if($_SESSION['status'] == 'O')
                 

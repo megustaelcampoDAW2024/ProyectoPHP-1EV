@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\SingletonDB;
+use PDO;
 
 class dbModel extends Model
 {
@@ -23,19 +24,51 @@ class dbModel extends Model
         return $tasks;
     }
 
-    public static function getUncompletedTasks()
+    public static function getTasksByPage($limit, $offset)
     {
         $db = SingletonDB::getInstance();
-        $sql = 
-        "SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion 
+        $stmt = $db->conn->prepare('SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion 
         FROM task 
-        WHERE estado != 'R'
-        ORDER BY fecha_creacion DESC";
-        $result = $db->conn->query($sql);
-        $tasks = [];
-        while ($row = $result->fetch(\PDO::FETCH_ASSOC)) {
-            $row['fecha_creacion'] = date('d-m-Y', strtotime($row['fecha_creacion']));
-            $tasks[] = $row;
+        ORDER BY fecha_creacion 
+        DESC LIMIT :limit OFFSET :offset');
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($tasks as &$task) {
+            $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
+        }
+        return $tasks;
+    }
+
+    public static function countTasks()
+    {
+        $db = SingletonDB::getInstance();
+        $stmt = $db->conn->query('SELECT COUNT(*) FROM task');
+        return $stmt->fetchColumn();
+    }
+
+    public static function countUncompletedTasks()
+    {
+        $db = SingletonDB::getInstance();
+        $stmt = $db->conn->query('SELECT COUNT(*) FROM task WHERE estado != "R"');
+        return $stmt->fetchColumn();
+    }
+
+    public static function getUncompletedTasksByPage($limit, $offset)
+    {
+        $db = SingletonDB::getInstance();
+        $stmt = $db->conn->prepare('SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion 
+        FROM task 
+        WHERE estado != "R"
+        ORDER BY fecha_creacion 
+        DESC LIMIT :limit OFFSET :offset');
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($tasks as &$task) {
+            $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
         }
         return $tasks;
     }

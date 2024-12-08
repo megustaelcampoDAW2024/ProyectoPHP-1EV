@@ -29,20 +29,36 @@ class Tareas extends Controller
 
     public function listarTareas()
     {
-        if($this->sessionUsuario->isLogged()){
-            $tasks = dbModel::getTasksOrderedByDate();
-            return view('listarTareas', compact('tasks'));
-        }else{
+        if ($this->sessionUsuario->isLogged()) {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $perPage = 10;
+            $offset = ($page - 1) * $perPage;
+
+            $totalTasks = dbModel::countTasks();
+            $tasks = dbModel::getTasksByPage($perPage, $offset);
+
+            $totalPages = ceil($totalTasks / $perPage);
+
+            return view('listarTareas', compact('tasks', 'page', 'totalPages'));
+        } else {
             myRedirect("logIn");
         }
     }
 
     public function listarTareasPorCompletar()
     {
-        if($this->sessionUsuario->isLogged()){
-            $tasks = dbModel::getUncompletedTasks();
-            return view('listarTareas', compact('tasks'));
-        }else{
+        if ($this->sessionUsuario->isLogged()) {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $perPage = 10;
+            $offset = ($page - 1) * $perPage;
+
+            $totalTasks = dbModel::countUncompletedTasks();
+            $tasks = dbModel::getUncompletedTasksByPage($perPage, $offset);
+
+            $totalPages = ceil($totalTasks / $perPage);
+
+            return view('listarTareas', compact('tasks', 'page', 'totalPages'));
+        } else {
             myRedirect("logIn");
         }
     }
@@ -84,7 +100,7 @@ class Tareas extends Controller
                     }
                     $task = new Task();
                     dbModel::insertTask($task);
-                    myRedirect("listarTareas");
+                    //myRedirect("listarTareas");
                 }else{
                     return view('formTarea', compact('errores', 'utiles', 'provincias'));
                 }
@@ -207,7 +223,7 @@ class Tareas extends Controller
 
     public function eliminarFoto($id)
     {
-        if($this->sessionUsuario->isLogged()){
+        if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'O'){
             $task = dbModel::getTaskById($id);
             unlink(__DIR__ . '/../../../storage/app/public/' . $task['foto']);
             dbModel::deleteFicheros("foto", $id);
@@ -219,7 +235,7 @@ class Tareas extends Controller
 
     public function eliminarFichResu($id)
     {
-        if($this->sessionUsuario->isLogged()){
+        if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'O'){
             $task = dbModel::getTaskById($id);
             unlink(__DIR__ . '/../../../storage/app/public/' . $task['fich_resu']);
             dbModel::deleteFicheros("fich_resu", $id);
