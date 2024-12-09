@@ -74,25 +74,9 @@ class Tareas extends Controller
             if($_POST){
                 $utiles -> filtroForm($errores);
                 if(!$errores -> HayErrores()){
-
-                    if (isset($_FILES['fich-resu']) && $_FILES['fich-resu']['error'] == UPLOAD_ERR_OK) {//Guardar el archivo si existe
-                        $fichResu = $_FILES['fich-resu'];
-                        $fichResuName = time() . '_' . basename($fichResu['name']);
-                        $dir = __DIR__ . '/../../../storage/app/public/';
-                        move_uploaded_file($fichResu['tmp_name'], $dir . $fichResuName);
-                        $_POST['fich-resu'] = $fichResuName;
-                    }
-
-                    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {//Guardar la foto si existe
-                        $foto = $_FILES['foto'];
-                        $fotoName = time() . '_' . basename($foto['name']);
-                        $dir = __DIR__ . '/../../../storage/app/public/';
-                        move_uploaded_file($foto['tmp_name'], $dir . $fotoName);
-                        $_POST['foto'] = $fotoName;
-                    }
                     $task = new Task();
                     dbModel::insertTask($task);
-                    //myRedirect("listarTareas");
+                    myRedirect("listarTareas");
                 }else{
                     return view('formTarea', compact('errores', 'utiles', 'provincias'));
                 }
@@ -117,30 +101,32 @@ class Tareas extends Controller
                 if (!$errores->HayErrores()) {
                     $updatedTask = new Task();
 
-                    if (isset($_FILES['fich-resu']) && $_FILES['fich-resu']['error'] == UPLOAD_ERR_OK) {//Guardar el archivo si existe
-                        $fichResu = $_FILES['fich-resu'];
-                        $fichResuName = time() . '_' . basename($fichResu['name']);
-                        $dir = __DIR__ . '/../../../storage/app/public/';
-                        move_uploaded_file($fichResu['tmp_name'], $dir . $fichResuName);
-                        $updatedTask->fich_resu = $fichResuName;
-                    }
-                    if($task['fich_resu'] != null && $_FILES['fich-resu']['name'] == ''){//Si no se sube un archivo, mantener el que ya estaba
-                        $updatedTask->fich_resu = $task['fich_resu'];
-                    }elseif($task['fich_resu'] != null && $_FILES['fich-resu']['name'] != ''){//Si se sube un archivo, borrar el anterior
-                        unlink(__DIR__ . '/../../../storage/app/public/' . $task['fich_resu']);
-                    }
-
-                    if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {//Guardar la foto si existe
-                        $foto = $_FILES['foto'];
-                        $fotoName = time() . '_' . basename($foto['name']);
-                        $dir = __DIR__ . '/../../../storage/app/public/';
-                        move_uploaded_file($foto['tmp_name'], $dir . $fotoName);
-                        $updatedTask->foto = $fotoName;
-                    }
-                    if($task['foto'] != null && $_FILES['foto']['name'] == ''){//Si no se sube un archivo, mantener el que ya estaba
-                        $updatedTask->foto = $task['foto'];
-                    }elseif($task['foto'] != null && $_FILES['foto']['name'] != ''){//Si se sube un archivo, borrar el anterior
-                        unlink(__DIR__ . '/../../../storage/app/public/' . $task['foto']);
+                    if(isset($_FILES['fich-resu']) || isset($_FILES['foto'])){//Si se sube un archivo o una foto
+                        if (isset($_FILES['fich-resu']) && $_FILES['fich-resu']['error'] == UPLOAD_ERR_OK) {//Guardar el archivo si existe
+                            $fichResu = $_FILES['fich-resu'];
+                            $fichResuName = time() . '_' . basename($fichResu['name']);
+                            $dir = __DIR__ . '/../../../storage/app/public/';
+                            move_uploaded_file($fichResu['tmp_name'], $dir . $fichResuName);
+                            $updatedTask->fich_resu = $fichResuName;
+                        }
+                        if($task['fich_resu'] != null && $_FILES['fich-resu']['name'] == ''){//Si no se sube un archivo, mantener el que ya estaba
+                            $updatedTask->fich_resu = $task['fich_resu'];
+                        }elseif($task['fich_resu'] != null && $_FILES['fich-resu']['name'] != ''){//Si se sube un archivo, borrar el anterior
+                            unlink(__DIR__ . '/../../../storage/app/public/' . $task['fich_resu']);
+                        }
+    
+                        if (isset($_FILES['foto']) && $_FILES['foto']['error'] == UPLOAD_ERR_OK) {//Guardar la foto si existe
+                            $foto = $_FILES['foto'];
+                            $fotoName = time() . '_' . basename($foto['name']);
+                            $dir = __DIR__ . '/../../../storage/app/public/';
+                            move_uploaded_file($foto['tmp_name'], $dir . $fotoName);
+                            $updatedTask->foto = $fotoName;
+                        }
+                        if($task['foto'] != null && $_FILES['foto']['name'] == ''){//Si no se sube un archivo, mantener el que ya estaba
+                            $updatedTask->foto = $task['foto'];
+                        }elseif($task['foto'] != null && $_FILES['foto']['name'] != ''){//Si se sube un archivo, borrar el anterior
+                            unlink(__DIR__ . '/../../../storage/app/public/' . $task['foto']);
+                        }
                     }
                     
                     if($_SESSION['status'] == 'A'){

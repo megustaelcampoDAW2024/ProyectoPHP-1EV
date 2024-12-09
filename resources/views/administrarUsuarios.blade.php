@@ -2,7 +2,8 @@
 @section('titulo', 'Constructora')
 @section('seccion')
     <h3>Administrar Usuarios</h3>
-    <table border="1" style="border-collapse: collapse">
+    <a href="{{ miUrl('crearUsuario') }}" class="btn btn-primary">Añadir Usuario</a><br><br>
+    <table class="table table-bordered">
         <tr>
             <th>ID</th>
             <th>Usuario</th>
@@ -24,13 +25,12 @@
                     @endif
                 </td>
                 <td>
-                    <a href="{{ miUrl('editarUsuario/'.$usuario->id) }}">Editar</a>
+                    <a href="{{ miUrl('editarUsuario/'.$usuario->id) }}" class="btn btn-warning">Editar</a>
                 </td>
                 <td>
-                    <a href="{{ miUrl('eliminarUsuario/'.$usuario->id) }}">Eliminar</a>
+                    <a href="{{ miUrl('eliminarUsuario/'.$usuario->id) }}" class="btn btn-danger">Eliminar</a>
                 </td>
             </tr>
         @endforeach
     </table><br>
-    <a href="{{ miUrl('crearUsuario') }}">Añadir Usuario</a>
 @endsection

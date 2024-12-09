@@ -31,7 +31,7 @@ class Task
         $this->estado = Utiles::ValorPost('estado');
         $this->fecha_creacion = date('Y-m-d H:i:s', strtotime(Utiles::ValorPost('fecha-creacion')));
         $this->operario = Utiles::ValorPost('operario');
-        $this->fecha_realizacion = (Utiles::ValorPost('fecha-realizacion') == '')? "N/A" : date('d-m-Y', strtotime(Utiles::ValorPost('fecha-realizacion')));
+        $this->fecha_realizacion = (Utiles::ValorPost('fecha-realizacion') == '')? null : date('Y-m-d H:i:s', strtotime(Utiles::ValorPost('fecha-realizacion')));
         $this->anotaciones_anteriores = Utiles::ValorPost('anotaciones-anteriores');
         $this->anotaciones_posteriores = Utiles::ValorPost('anotaciones-posteriores');
         $this->fich_resu = Utiles::ValorPost('fich-resu');

@@ -217,6 +217,7 @@ class dbModel extends Model
             "foto = " . 
             (($updatedTask->foto !== null && $updatedTask->foto != '') ? "'$updatedTask->foto'" : "NULL") . "
             WHERE task_id = $id";
+        echo $sql;
         $result = $db->conn->query($sql);
     }
 
