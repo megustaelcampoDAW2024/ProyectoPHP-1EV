@@ -12,7 +12,7 @@ class dbModel extends Model
     {
         $db = SingletonDB::getInstance();
         $sql = 
-        "SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion 
+        "SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion
         FROM task 
         ORDER BY fecha_creacion DESC";
         $result = $db->conn->query($sql);
@@ -27,7 +27,7 @@ class dbModel extends Model
     public static function getTasksByPage($limit, $offset)
     {
         $db = SingletonDB::getInstance();
-        $stmt = $db->conn->prepare('SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion 
+        $stmt = $db->conn->prepare('SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion, fecha_realizacion 
         FROM task 
         ORDER BY fecha_creacion 
         DESC LIMIT :limit OFFSET :offset');
@@ -37,6 +37,9 @@ class dbModel extends Model
         $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($tasks as &$task) {
             $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
+            if($task['fecha_realizacion'] != null){
+                $task['fecha_realizacion'] = date('d-m-Y', strtotime($task['fecha_realizacion']));
+            }
         }
         return $tasks;
     }
@@ -46,31 +49,6 @@ class dbModel extends Model
         $db = SingletonDB::getInstance();
         $stmt = $db->conn->query('SELECT COUNT(*) FROM task');
         return $stmt->fetchColumn();
-    }
-
-    public static function countUncompletedTasks()
-    {
-        $db = SingletonDB::getInstance();
-        $stmt = $db->conn->query('SELECT COUNT(*) FROM task WHERE estado != "R"');
-        return $stmt->fetchColumn();
-    }
-
-    public static function getUncompletedTasksByPage($limit, $offset)
-    {
-        $db = SingletonDB::getInstance();
-        $stmt = $db->conn->prepare('SELECT task_id, nombre, apell, descripcion, estado, fecha_creacion 
-        FROM task 
-        WHERE estado != "R"
-        ORDER BY fecha_creacion 
-        DESC LIMIT :limit OFFSET :offset');
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($tasks as &$task) {
-            $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
-        }
-        return $tasks;
     }
 
     public static function getTaskById($id)
@@ -95,13 +73,71 @@ class dbModel extends Model
         return $task;
     }
 
+    public static function countFilteredTasks($filters)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "SELECT COUNT(*) FROM task WHERE 1=1";
+    
+        if ($filters['estado']) {
+            $sql .= " AND estado = '{$filters['estado']}'";
+        }
+        if ($filters['id']) {
+            $sql .= " AND task_id {$filters['idCriterio']} {$filters['id']}";
+        }
+        if ($filters['fechaCreacion']) {
+            $sql .= " AND fecha_creacion {$filters['fechaCreacionCriterio']} '{$filters['fechaCreacion']}'";
+        }
+        if ($filters['fechaRealizacion']) {
+            $sql .= " AND fecha_realizacion {$filters['fechaRealizacionCriterio']} '{$filters['fechaRealizacion']}'";
+        }
+    
+        $stmt = $db->conn->query($sql);
+        return $stmt->fetchColumn();
+    }
+    
+    public static function getFilteredTasks($limit, $offset, $filters)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "SELECT * 
+        FROM task 
+        WHERE 1=1";
+        if ($filters['estado']) {
+            $sql .= " AND estado = '{$filters['estado']}'";
+        }
+        if ($filters['id']) {
+            $sql .= " AND task_id {$filters['idCriterio']} {$filters['id']}";
+        }
+        if ($filters['fechaCreacion']) {
+            $sql .= " AND fecha_creacion {$filters['fechaCreacionCriterio']} '{$filters['fechaCreacion']}'";
+        }
+        if ($filters['fechaRealizacion']) {
+            $sql .= " AND fecha_realizacion {$filters['fechaRealizacionCriterio']} '{$filters['fechaRealizacion']}'";
+        }
+    
+        $sql .= " ORDER BY fecha_creacion DESC LIMIT :limit OFFSET :offset";
+        $stmt = $db->conn->prepare($sql);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        foreach ($tasks as &$task) {
+            $task['fecha_creacion'] = date('d-m-Y', strtotime($task['fecha_creacion']));
+            if ($task['fecha_realizacion'] != null) {
+                $task['fecha_realizacion'] = date('d-m-Y', strtotime($task['fecha_realizacion']));
+            }
+        }
+    
+        return $tasks;
+    }
+
     public static function getProvincias()
     {
         $db = SingletonDB::getInstance();
         $sql = 
         "SELECT cod, nombre, comunidad_id
         FROM tbl_provincias
-        ORDER BY comunidad_id";
+        ORDER BY nombre";
         $result = $db->conn->query($sql);
         return $result;
     }

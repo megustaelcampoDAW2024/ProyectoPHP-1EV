@@ -30,34 +30,26 @@ class Tareas extends Controller
     public function listarTareas()
     {
         if ($this->sessionUsuario->isLogged()) {
-            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
             $perPage = 10;
             $offset = ($page - 1) * $perPage;
-
-            $totalTasks = dbModel::countTasks();
-            $tasks = dbModel::getTasksByPage($perPage, $offset);
-
+    
+            $filters = [
+                'estado' => $_POST['estado-query'] ?? null,
+                'id' => $_POST['id-query'] ?? null,
+                'idCriterio' => $_POST['id-query-criterio'] ?? '=',
+                'fechaCreacion' => $_POST['fecha-creacion-query'] ?? null,
+                'fechaCreacionCriterio' => $_POST['fecha-creacion-query-criterio'] ?? '=',
+                'fechaRealizacion' => $_POST['fecha-realizacion-query'] ?? null,
+                'fechaRealizacionCriterio' => $_POST['fecha-realizacion-query-criterio'] ?? '='
+            ];
+    
+            $totalTasks = dbModel::countFilteredTasks($filters);
+            $tasks = dbModel::getFilteredTasks($perPage, $offset, $filters);
+    
             $totalPages = ceil($totalTasks / $perPage);
-
-            return view('listarTareas', compact('tasks', 'page', 'totalPages'));
-        } else {
-            myRedirect("logIn");
-        }
-    }
-
-    public function listarTareasPorCompletar()
-    {
-        if ($this->sessionUsuario->isLogged()) {
-            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            $perPage = 10;
-            $offset = ($page - 1) * $perPage;
-
-            $totalTasks = dbModel::countUncompletedTasks();
-            $tasks = dbModel::getUncompletedTasksByPage($perPage, $offset);
-
-            $totalPages = ceil($totalTasks / $perPage);
-
-            return view('listarTareas', compact('tasks', 'page', 'totalPages'));
+    
+            return view('listarTareas', compact('tasks', 'page', 'totalPages', 'filters'));
         } else {
             myRedirect("logIn");
         }

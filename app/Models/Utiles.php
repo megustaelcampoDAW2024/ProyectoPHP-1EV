@@ -34,6 +34,10 @@ class Utiles extends Model
                     if(!$this->valorPost($name) == '')
                         if(!$this->validarCodigoPostal($valor))
                             $errores -> AnotaError($name, "El Código Postal es Incorrecto <br>[XXXXX]");
+                        else if(!$this->valorPost('provincia') == 0)
+                            if (substr($this->valorPost($name), 0, 2) != $this->valorPost('provincia')) {
+                                $errores->AnotaError($name, "La Codigo Postal no coincide con la Provincia");
+                            }
                 if($name == "email"){
                     if($this->valorPost($name) == '')
                         $errores -> AnotaError($name, "Rellenar el e-Mail es Obligatorio");
