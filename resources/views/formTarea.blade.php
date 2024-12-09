@@ -72,11 +72,10 @@
                 <div class="form-group">
                     <label for="operario">Operario que Realiza la Tarea</label>
                     <select class="form-control" name="operario" id="operario">
-                        <option value="0" {{ ($_POST) ? ($utiles->valorPost('operario') == '0' ? 'selected' : '') : (isset($task) && $task['operario'] == '0' ? 'selected' : '') }} hidden>Operario</option>
-                        <option value="1" {{ ($_POST) ? ($utiles->valorPost('operario') == '1' ? 'selected' : '') : (isset($task) && $task['operario'] == '1' ? 'selected' : '') }}>Jose Miguel Ramirez</option>
-                        <option value="2" {{ ($_POST) ? ($utiles->valorPost('operario') == '2' ? 'selected' : '') : (isset($task) && $task['operario'] == '2' ? 'selected' : '') }}>Manuel Fernandez</option>
-                        <option value="3" {{ ($_POST) ? ($utiles->valorPost('operario') == '3' ? 'selected' : '') : (isset($task) && $task['operario'] == '3' ? 'selected' : '') }}>Ana Nuñez</option>
-                        <option value="4" {{ ($_POST) ? ($utiles->valorPost('operario') == '4' ? 'selected' : '') : (isset($task) && $task['operario'] == '4' ? 'selected' : '') }}>Juan Rodriguez</option>
+                        <option value="0" {{ ($_POST) ? ($utiles->valorPost('operario') == '0' ? 'selected' : '') : (isset($task) && $task['operario_id'] == '0' ? 'selected' : '') }} hidden>Operario</option>
+                        @foreach($operarios as $operario)
+                            <option value="{{ $operario['id'] }}" {{ ($_POST) ? ($utiles->valorPost('operario') == $operario['id'] ? 'selected' : '') : (isset($task) && $task['operario_id'] == $operario['id'] ? 'selected' : '') }}>{{ $operario['usuario'] }}</option>
+                        @endforeach
                     </select>
                 </div>
             @endif
@@ -123,7 +122,7 @@
                 <div class="form-group">
                     <label for="fich-resu">Fichero Resumen de las Tareas Realizadas</label>
                     @if(isset($task['fich_resu']))
-                        <p>Archivo actual: {{ $task['fich_resu'] }} --- <a href="{{miUrl("eliminarFichResu/{$id}")}}">ELIMINAR</a></p>
+                        <p><a href="{{miUrl("eliminarFichResu/{$id}")}}" class="btn btn-danger">ELIMINAR</a> Archivo actual: {{ $task['fich_resu'] }}</p>
                     @endif
                     <input type="file" class="form-control-file" name="fich-resu" id="fich-resu" accept=".pdf">
                 </div>
@@ -131,7 +130,7 @@
                 <div class="form-group">
                     <label for="foto">Foto de las Tareas Realizadas</label>
                     @if(isset($task['foto']))
-                        <p>Archivo actual: {{ $task['foto'] }} --- <a href="{{miUrl("eliminarFoto/{$id}")}}">ELIMINAR</a></p>
+                        <p><a href="{{miUrl("eliminarFoto/{$id}")}}" class="btn btn-danger">ELIMINAR</a> Archivo actual: {{ $task['foto'] }}</p>
                     @endif
                     <input type="file" class="form-control-file" name="foto" id="foto" accept=".jpg, .jpeg, .png">
                 </div>

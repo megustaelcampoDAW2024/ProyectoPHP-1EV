@@ -56,7 +56,7 @@ class dbModel extends Model
         $db = SingletonDB::getInstance();
         $sql = 
         "SELECT task_id, num_fiscal_cliente, nombre, apell, tlf, descripcion, email, direccion, poblacion, 
-        codigo_post, provincia, estado, fecha_creacion, operario, fecha_realizacion, anotaciones_anteriores, 
+        codigo_post, provincia, estado, fecha_creacion, operario_id, fecha_realizacion, anotaciones_anteriores, 
         anotaciones_posteriores, fich_resu, foto
         FROM task 
         WHERE task_id = $id";
@@ -147,7 +147,7 @@ class dbModel extends Model
         $db = SingletonDB::getInstance();
         $sql = 
         "INSERT INTO task (num_fiscal_cliente, nombre, apell, tlf, descripcion, email, direccion, poblacion, 
-        codigo_post, provincia, estado, fecha_creacion, operario, fecha_realizacion, anotaciones_anteriores, 
+        codigo_post, provincia, estado, fecha_creacion, operario_id, fecha_realizacion, anotaciones_anteriores, 
         anotaciones_posteriores, fich_resu, foto)
         VALUES (" . 
             (($task->num_fiscal_cliente !== null && $task->num_fiscal_cliente != '') ? "'$task->num_fiscal_cliente'" : "11111111") . "," . 
@@ -193,7 +193,7 @@ class dbModel extends Model
             (($updatedTask->codigo_post !== null && $updatedTask->codigo_post != '') ? "'$updatedTask->codigo_post'" : "NULL") . ", " . 
             "provincia = " . 
             (($updatedTask->provincia !== null && $updatedTask->provincia != 0) ? "'$updatedTask->provincia'" : "NULL") . ", " . 
-            "operario = " . 
+            "operario_id = " . 
             (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . "
             WHERE task_id = $id";
         $result = $db->conn->query($sql);
@@ -233,12 +233,9 @@ class dbModel extends Model
     public static function getOperarios()
     {
         $db = SingletonDB::getInstance();
-        $sql = 
-        "SELECT id, usuario, password, 
-        FROM operario,
-        WHERE status = 'O'";
+        $sql = "SELECT id, usuario FROM usuarios WHERE status = 'O'";
         $result = $db->conn->query($sql);
-        return $result;
+        return $result->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public static function checkUser($user, $pass)
@@ -296,6 +293,14 @@ class dbModel extends Model
         $sql = "SELECT * FROM usuarios WHERE id = $id";
         $result = $db->conn->query($sql);
         return $result->fetch(\PDO::FETCH_OBJ);
+    }
+
+    public static function getUsuarioNameById($id)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "SELECT usuario FROM usuarios WHERE id = $id";
+        $result = $db->conn->query($sql);
+        return $result->fetch(\PDO::FETCH_ASSOC);
     }
 
     public static function editarUsuario($id, $usuario, $password, $status)

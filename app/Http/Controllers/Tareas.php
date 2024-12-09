@@ -59,7 +59,8 @@ class Tareas extends Controller
     {
         if($this->sessionUsuario->isLogged()){
             $task = dbModel::getTaskById($id);
-            return view('detallesTarea', compact('task'));
+            $operario = dbModel::getUsuarioNameById($task['operario_id']);
+            return view('detallesTarea', compact('task', 'operario'));
         }else{
             myRedirect("logIn");
         }
@@ -71,6 +72,7 @@ class Tareas extends Controller
             $errores = new GestorErrores();
             $utiles = new Utiles();
             $provincias = dbModel::getProvincias();
+            $operarios = dbModel::getOperarios();
             if($_POST){
                 $utiles -> filtroForm($errores);
                 if(!$errores -> HayErrores()){
@@ -78,10 +80,10 @@ class Tareas extends Controller
                     dbModel::insertTask($task);
                     myRedirect("listarTareas");
                 }else{
-                    return view('formTarea', compact('errores', 'utiles', 'provincias'));
+                    return view('formTarea', compact('errores', 'utiles', 'provincias', 'operarios'));
                 }
             }else{
-                return view('formTarea', compact('errores', 'utiles', 'provincias'));
+                return view('formTarea', compact('errores', 'utiles', 'provincias', 'operarios'));
             }
         }else{
             myRedirect("logIn");
@@ -94,6 +96,7 @@ class Tareas extends Controller
             $errores = new GestorErrores();
             $utiles = new Utiles();
             $provincias = dbModel::getProvincias();
+            $operarios = dbModel::getOperarios();
             $task = dbModel::getTaskById($id);
 
             if ($_POST) {
@@ -136,10 +139,10 @@ class Tareas extends Controller
                     }
                     myRedirect("detallesTarea/$id");
                 } else {
-                    return view('formTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
+                    return view('formTarea', compact('errores', 'utiles', 'provincias', 'operarios',  'task', 'id'));
                 }
             } else {
-                return view('formTarea', compact('errores', 'utiles', 'provincias', 'task', 'id'));
+                return view('formTarea', compact('errores', 'utiles', 'provincias', 'operarios', 'task', 'id'));
             }
         }else{
             myRedirect("logIn");

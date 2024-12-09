@@ -75,7 +75,7 @@
         </tr>    
         <tr>
             <td>Operario</td>
-            <td>{{$task['operario']}}</td>
+            <td>{{$operario['usuario']}}</td>
         </tr>    
         <tr>
             <td>Fecha Creación</td>
