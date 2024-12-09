@@ -8,6 +8,11 @@ use PDO;
 
 class dbModel extends Model
 {
+    /**
+     * Obtiene las tareas ordenadas por fecha de creación en orden descendente.
+     *
+     * @return array Arreglo de tareas.
+     */
     public static function getTasksOrderedByDate()
     {
         $db = SingletonDB::getInstance();
@@ -24,6 +29,13 @@ class dbModel extends Model
         return $tasks;
     }
 
+    /**
+     * Obtiene las tareas paginadas.
+     *
+     * @param int $limit Número máximo de tareas a obtener.
+     * @param int $offset Desplazamiento para la paginación.
+     * @return array Arreglo de tareas.
+     */
     public static function getTasksByPage($limit, $offset)
     {
         $db = SingletonDB::getInstance();
@@ -44,6 +56,11 @@ class dbModel extends Model
         return $tasks;
     }
 
+    /**
+     * Cuenta el número total de tareas.
+     *
+     * @return int Número total de tareas.
+     */
     public static function countTasks()
     {
         $db = SingletonDB::getInstance();
@@ -51,6 +68,12 @@ class dbModel extends Model
         return $stmt->fetchColumn();
     }
 
+    /**
+     * Obtiene una tarea por su ID.
+     *
+     * @param int $id ID de la tarea.
+     * @return array|null Tarea encontrada o null si no existe.
+     */
     public static function getTaskById($id)
     {
         $db = SingletonDB::getInstance();
@@ -73,6 +96,12 @@ class dbModel extends Model
         return $task;
     }
 
+    /**
+     * Cuenta el número de tareas que cumplen con los filtros especificados.
+     *
+     * @param array $filters Filtros a aplicar.
+     * @return int Número de tareas que cumplen con los filtros.
+     */
     public static function countFilteredTasks($filters)
     {
         $db = SingletonDB::getInstance();
@@ -95,6 +124,14 @@ class dbModel extends Model
         return $stmt->fetchColumn();
     }
     
+    /**
+     * Obtiene las tareas filtradas y paginadas.
+     *
+     * @param int $limit Número máximo de tareas a obtener.
+     * @param int $offset Desplazamiento para la paginación.
+     * @param array $filters Filtros a aplicar.
+     * @return array Arreglo de tareas.
+     */
     public static function getFilteredTasks($limit, $offset, $filters)
     {
         $db = SingletonDB::getInstance();
@@ -131,6 +168,11 @@ class dbModel extends Model
         return $tasks;
     }
 
+    /**
+     * Obtiene todas las provincias.
+     *
+     * @return PDOStatement Resultado de la consulta.
+     */
     public static function getProvincias()
     {
         $db = SingletonDB::getInstance();
@@ -142,6 +184,12 @@ class dbModel extends Model
         return $result;
     }
 
+    /**
+     * Inserta una nueva tarea en la base de datos.
+     *
+     * @param object $task Objeto con los datos de la tarea.
+     * @return bool Resultado de la operación.
+     */
     public static function insertTask($task)
     {
         $db = SingletonDB::getInstance();
@@ -168,6 +216,13 @@ class dbModel extends Model
         return $result;
     }
 
+    /**
+     * Actualiza una tarea como administrador.
+     *
+     * @param object $updatedTask Objeto con los datos actualizados de la tarea.
+     * @param int $id ID de la tarea a actualizar.
+     * @return bool Resultado de la operación.
+     */
     public static function updateTaskAdmin($updatedTask, $id)
     {
         $db = SingletonDB::getInstance();
@@ -199,6 +254,13 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
     }
 
+    /**
+     * Actualiza una tarea como operario.
+     *
+     * @param object $updatedTask Objeto con los datos actualizados de la tarea.
+     * @param int $id ID de la tarea a actualizar.
+     * @return bool Resultado de la operación.
+     */
     public static function updateTaskOperario($updatedTask, $id)
     {
         $db = SingletonDB::getInstance();
@@ -221,6 +283,12 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
     }
 
+    /**
+     * Elimina una tarea por su ID.
+     *
+     * @param int $id ID de la tarea a eliminar.
+     * @return bool Resultado de la operación.
+     */
     public static function deleteTask($id)
     {
         $db = SingletonDB::getInstance();
@@ -230,6 +298,11 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
     }
 
+    /**
+     * Obtiene todos los operarios.
+     *
+     * @return array Arreglo de operarios.
+     */
     public static function getOperarios()
     {
         $db = SingletonDB::getInstance();
@@ -238,6 +311,13 @@ class dbModel extends Model
         return $result->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Verifica las credenciales de un usuario.
+     *
+     * @param string $user Nombre de usuario.
+     * @param string $pass Contraseña del usuario.
+     * @return bool True si las credenciales son correctas, false en caso contrario.
+     */
     public static function checkUser($user, $pass)
     {
         $db = SingletonDB::getInstance();
@@ -250,6 +330,13 @@ class dbModel extends Model
         return ($user) ? true : false;
     }
 
+    /**
+     * Obtiene un usuario por sus credenciales.
+     *
+     * @param string $user Nombre de usuario.
+     * @param string $pass Contraseña del usuario.
+     * @return array|null Usuario encontrado o null si no existe.
+     */
     public static function getUser($user, $pass)
     {
         $db = SingletonDB::getInstance();
@@ -262,6 +349,13 @@ class dbModel extends Model
         return $user;
     }
 
+    /**
+     * Elimina los archivos de una tarea.
+     *
+     * @param string $campo Campo a actualizar.
+     * @param int $id ID de la tarea.
+     * @return bool Resultado de la operación.
+     */
     public static function deleteFicheros($campo, $id)
     {
         $db = SingletonDB::getInstance();
@@ -272,6 +366,11 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
     }
 
+    /**
+     * Obtiene todos los usuarios.
+     *
+     * @return array Arreglo de usuarios.
+     */
     public static function getUsuarios()
     {
         $db = SingletonDB::getInstance();
@@ -280,6 +379,14 @@ class dbModel extends Model
         return $result->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    /**
+     * Crea un nuevo usuario.
+     *
+     * @param string $usuario Nombre de usuario.
+     * @param string $password Contraseña del usuario.
+     * @param string $status Estado del usuario.
+     * @return bool Resultado de la operación.
+     */
     public static function crearUsuario($usuario, $password, $status)
     {
         $db = SingletonDB::getInstance();
@@ -287,6 +394,12 @@ class dbModel extends Model
         $db->conn->query($sql);
     }
 
+    /**
+     * Obtiene un usuario por su ID.
+     *
+     * @param int $id ID del usuario.
+     * @return object Usuario encontrado.
+     */
     public static function getUsuarioById($id)
     {
         $db = SingletonDB::getInstance();
@@ -295,6 +408,12 @@ class dbModel extends Model
         return $result->fetch(\PDO::FETCH_OBJ);
     }
 
+    /**
+     * Obtiene el nombre de usuario por su ID.
+     *
+     * @param int $id ID del usuario.
+     * @return array Nombre de usuario.
+     */
     public static function getUsuarioNameById($id)
     {
         $db = SingletonDB::getInstance();
@@ -303,6 +422,15 @@ class dbModel extends Model
         return $result->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Edita un usuario.
+     *
+     * @param int $id ID del usuario.
+     * @param string $usuario Nombre de usuario.
+     * @param string $password Contraseña del usuario.
+     * @param string $status Estado del usuario.
+     * @return bool Resultado de la operación.
+     */
     public static function editarUsuario($id, $usuario, $password, $status)
     {
         $db = SingletonDB::getInstance();
@@ -310,6 +438,12 @@ class dbModel extends Model
         $db->conn->query($sql);
     }
 
+    /**
+     * Elimina un usuario por su ID.
+     *
+     * @param int $id ID del usuario.
+     * @return bool Resultado de la operación.
+     */
     public static function eliminarUsuario($id)
     {
         $db = SingletonDB::getInstance();

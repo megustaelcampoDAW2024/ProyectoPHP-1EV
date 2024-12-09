@@ -10,7 +10,6 @@ use App\Models\SessionUsuario;
 
 class Tareas extends Controller
 {
-
     private $sessionUsuario;
 
     public function __construct()
@@ -18,6 +17,9 @@ class Tareas extends Controller
         $this->sessionUsuario = new SessionUsuario();
     }
 
+    /**
+     * Muestra la página de inicio si el usuario está logueado, de lo contrario redirige a la página de inicio de sesión.
+     */
     public function inicio()
     {
         if($this->sessionUsuario->isLogged()){
@@ -27,6 +29,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Lista las tareas con filtros y paginación.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function listarTareas()
     {
         if ($this->sessionUsuario->isLogged()) {
@@ -55,6 +62,12 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Muestra los detalles de una tarea específica.
+     * 
+     * @param int $id El ID de la tarea.
+     * @return \Illuminate\View\View
+     */
     public function detallesTarea($id)
     {
         if($this->sessionUsuario->isLogged()){
@@ -66,6 +79,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Crea una nueva tarea si el usuario tiene permisos de administrador.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function crearTarea()
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A'){
@@ -90,6 +108,12 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Modifica una tarea existente.
+     * 
+     * @param int $id El ID de la tarea.
+     * @return \Illuminate\View\View
+     */
     public function modificarTarea($id)
     {
         if($this->sessionUsuario->isLogged()){
@@ -149,6 +173,12 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Confirma la eliminación de una tarea.
+     * 
+     * @param int $id El ID de la tarea.
+     * @return \Illuminate\View\View
+     */
     public function confirmarEliminarTarea($id)
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A'){
@@ -159,6 +189,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Elimina una tarea.
+     * 
+     * @param int $id El ID de la tarea.
+     */
     public function eliminarTarea($id)
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A'){
@@ -176,6 +211,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Maneja el inicio de sesión del usuario.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function logIn()
     {
         if($this->sessionUsuario->isLogged()){
@@ -202,6 +242,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Elimina la foto de una tarea.
+     * 
+     * @param int $id El ID de la tarea.
+     */
     public function eliminarFoto($id)
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'O'){
@@ -214,6 +259,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Elimina el archivo de resumen de una tarea.
+     * 
+     * @param int $id El ID de la tarea.
+     */
     public function eliminarFichResu($id)
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'O'){
@@ -226,12 +276,20 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Cierra la sesión del usuario.
+     */
     public function logOut()
     {
         $this->sessionUsuario->destroy();
         myRedirect("logIn");
     }
 
+    /**
+     * Administra los usuarios si el usuario tiene permisos de administrador.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function administrarUsuarios()
     {
         if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
@@ -242,6 +300,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Crea un nuevo usuario si el usuario tiene permisos de administrador.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function crearUsuario()
     {
         if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
@@ -256,6 +319,12 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Edita un usuario existente si el usuario tiene permisos de administrador.
+     * 
+     * @param int $id El ID del usuario.
+     * @return \Illuminate\View\View
+     */
     public function editarUsuario($id)
     {
         if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
@@ -271,6 +340,11 @@ class Tareas extends Controller
         }
     }
 
+    /**
+     * Elimina un usuario si el usuario tiene permisos de administrador.
+     * 
+     * @param int $id El ID del usuario.
+     */
     public function eliminarUsuario($id)
     {
         if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {

@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Utiles extends Model
 {
-
+    /**
+     * Filtra el formulario y anota errores si los hay.
+     *
+     * @param object $errores Objeto para anotar errores.
+     */
     function filtroForm($errores){
         foreach($_POST as $name => $valor){
             if($name != '_token'){
@@ -51,6 +55,12 @@ class Utiles extends Model
         }
     }
 
+    /**
+     * Obtiene el valor de un campo POST.
+     *
+     * @param string $nombreCampo Nombre del campo.
+     * @return string Valor del campo.
+     */
     static function valorPost($nombreCampo){
         if (isset($_POST[$nombreCampo])){
             return $_POST[$nombreCampo];
@@ -59,11 +69,24 @@ class Utiles extends Model
             return '';
     }
 
+    /**
+     * Aplica estilo de color a la etiqueta si hay un error.
+     *
+     * @param string $name Nombre del campo.
+     * @param object $errores Objeto para verificar errores.
+     */
     function colorLabel($name, $errores){
         if($errores -> HayError($name))
             echo  'style="color: red;"';
     }
 
+    /**
+     * Muestra el contenido de la etiqueta, incluyendo errores si los hay.
+     *
+     * @param string $name Nombre del campo.
+     * @param string $nomLabel Nombre de la etiqueta.
+     * @param object $errores Objeto para verificar errores.
+     */
     function contenidoLabel($name, $nomLabel, $errores){
         if($_POST){
             if($errores -> HayError($name))
@@ -74,24 +97,54 @@ class Utiles extends Model
             echo $nomLabel;
     }
 
+    /**
+     * Obtiene la fecha actual en formato 'd-m-Y'.
+     *
+     * @return string Fecha actual.
+     */
     function obtenerFechaActual(){
         return date('d-m-Y');
     }
 
+    /**
+     * Valida el formato del número de teléfono.
+     *
+     * @param string $telefono Número de teléfono.
+     * @return bool True si es válido, false en caso contrario.
+     */
     function validarTelefono($telefono){
         $telefono = str_replace([' ', '-'], '', $telefono);
         $patronH = "/^\+";
         return preg_match('/^\+\d{2}\d{9}$/', $telefono) === 1;
     }
 
+    /**
+     * Valida el formato del código postal.
+     *
+     * @param string $codigoPostal Código postal.
+     * @return bool True si es válido, false en caso contrario.
+     */
     function validarCodigoPostal($codigoPostal){
         return preg_match('/^\d{5}$/', $codigoPostal) === 1;
     }
 
+    /**
+     * Valida el formato del correo electrónico.
+     *
+     * @param string $email Correo electrónico.
+     * @return bool True si es válido, false en caso contrario.
+     */
     function validarEmail($email){
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
     }
 
+    /**
+     * Valida si una fecha es posterior a otra.
+     *
+     * @param string $fechaInicial Fecha inicial.
+     * @param string $fechaNueva Fecha nueva.
+     * @return bool True si la fecha nueva es posterior, false en caso contrario.
+     */
     function validarFechaPosterior($fechaInicial, $fechaNueva){
         $fechaNuevaValida = preg_match('/^\d{2}[-\/]\d{2}[-\/]\d{4}$/', $fechaNueva) === 1;
         if (!$fechaNuevaValida) {
@@ -105,11 +158,10 @@ class Utiles extends Model
     }
 
     /**
-     * Validar DNI (NIF), CIF, NIE
+     * Valida un DNI (NIF), CIF o NIE.
      *
-     * @param string $dni Numero de identificación
-     *
-     * @return bool Si es ok(true) o no(false)
+     * @param string $dni Número de identificación.
+     * @return bool True si es válido, false en caso contrario.
      */
     function validDniCifNie($dni){
         $cif = strtoupper($dni);
