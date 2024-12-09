@@ -70,7 +70,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="operario">Operario que Realiza la Tarea</label>
+                    <label {{ ($_POST) ? $utiles->colorLabel('operario', $errores) : '' }} for="operario">
+                        @php $utiles->contenidoLabel('operario', 'Operario que Realiza la Tarea', $errores) @endphp</label>
                     <select class="form-control" name="operario" id="operario">
                         <option value="0" {{ ($_POST) ? ($utiles->valorPost('operario') == '0' ? 'selected' : '') : (isset($task) && $task['operario_id'] == '0' ? 'selected' : '') }} hidden>Operario</option>
                         @foreach($operarios as $operario)

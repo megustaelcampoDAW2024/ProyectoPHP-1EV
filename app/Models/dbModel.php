@@ -185,6 +185,21 @@ class dbModel extends Model
     }
 
     /**
+     * Obtiene el nombre de una provincia por su ID.
+     *
+     * @param string $id El ID de la provincia.
+     * @return string|false El nombre de la provincia si se encuentra, o false si no se encuentra.
+     */
+    public static function getProvinciaNameById($id)
+    {
+        $db = SingletonDB::getInstance();
+        $stmt = $db->conn->prepare('SELECT nombre FROM tbl_provincias WHERE cod = :id');
+        $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
+    /**
      * Inserta una nueva tarea en la base de datos.
      *
      * @param object $task Objeto con los datos de la tarea.

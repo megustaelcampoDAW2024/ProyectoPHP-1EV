@@ -53,15 +53,15 @@
                 </tr>    
                 <tr>
                     <td>Provincia</td>
-                    <td>{{$task['provincia']}}</td>
-                </tr>    
+                    <td>{{$provincia}}</td>
+                </tr>   
                 <tr>
                     <td>Estado</td>
                     <td>{{$task['estado']}}</td>
                 </tr>    
                 <tr>
                     <td>Operario</td>
-                    <td>{{$task['operario_id']}}</td>
+                    <td>{{$operario['usuario']}}</td>
                 </tr>
                 <tr>
                     <td>Fecha Creación</td>

@@ -73,7 +73,8 @@ class Tareas extends Controller
         if($this->sessionUsuario->isLogged()){
             $task = dbModel::getTaskById($id);
             $operario = dbModel::getUsuarioNameById($task['operario_id']);
-            return view('detallesTarea', compact('task', 'operario'));
+            $provincia = dbModel::getProvinciaNameById($task['provincia']);
+            return view('detallesTarea', compact('task', 'operario', 'provincia'));
         }else{
             myRedirect("logIn");
         }
@@ -183,7 +184,9 @@ class Tareas extends Controller
     {
         if($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A'){
             $task = dbModel::getTaskById($id);
-            return view('eliminarTarea', compact('task', 'id'));
+            $operario = dbModel::getUsuarioNameById($task['operario_id']);
+            $provincia = dbModel::getProvinciaNameById($task['provincia']);
+            return view('eliminarTarea', compact('task', 'id', 'operario', 'provincia'));
         }else{
             myRedirect("listarTareas");
         }

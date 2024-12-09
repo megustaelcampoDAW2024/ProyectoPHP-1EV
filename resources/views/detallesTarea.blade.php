@@ -67,8 +67,8 @@
         </tr>    
         <tr>
             <td>Provincia</td>
-            <td>{{$task['provincia']}}</td>
-        </tr>    
+            <td>{{$provincia}}</td>
+        </tr>   
         <tr>
             <td>Estado</td>
             <td>{{$task['estado']}}</td>

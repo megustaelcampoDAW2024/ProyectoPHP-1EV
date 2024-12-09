@@ -51,6 +51,9 @@ class Utiles extends Model
                     if(!$this->valorPost($name) == '')
                         if(!$this->validarFechaPosterior($_POST['fecha-creacion'], $valor))
                             $errores -> AnotaError($name, "La Fecha es Incorrecta <br>[DD/MM/AAAA]<br>[DD-MM-AAAA]");
+                if($name == "operario")
+                    if($this->valorPost($name) == 0)
+                        $errores -> AnotaError($name, "Seleccionar un Operario es Obligatorio");
             }
         }
     }
