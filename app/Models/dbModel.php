@@ -274,4 +274,41 @@ class dbModel extends Model
         $result = $db->conn->query($sql);
     }
 
+    public static function getUsuarios()
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "SELECT * FROM usuarios";
+        $result = $db->conn->query($sql);
+        return $result->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public static function crearUsuario($usuario, $password, $status)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "INSERT INTO usuarios (usuario, password, status) VALUES ('$usuario', '$password', '$status')";
+        $db->conn->query($sql);
+    }
+
+    public static function getUsuarioById($id)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "SELECT * FROM usuarios WHERE id = $id";
+        $result = $db->conn->query($sql);
+        return $result->fetch(\PDO::FETCH_OBJ);
+    }
+
+    public static function editarUsuario($id, $usuario, $password, $status)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "UPDATE usuarios SET usuario = '$usuario', password = '$password', status = '$status' WHERE id = $id";
+        $db->conn->query($sql);
+    }
+
+    public static function eliminarUsuario($id)
+    {
+        $db = SingletonDB::getInstance();
+        $sql = "DELETE FROM usuarios WHERE id = $id";
+        $db->conn->query($sql);
+    }
+
 }

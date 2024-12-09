@@ -71,15 +71,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 INSERT INTO usuarios (usuario, password, status)
 VALUES 
 ('admin1', 'pwd1', 'A'),
-('admin2', 'pwd2', 'A'),
-('admin3', 'pwd3', 'A'),
-('admin4', 'pwd4', 'A'),
-('admin5', 'pwd5', 'A'),
-('operario1', 'pwd1', 'O'),
-('operario2', 'pwd2', 'O'),
-('operario3', 'pwd3', 'O'),
-('operario4', 'pwd4', 'O'),
-('operario5', 'pwd5', 'O');
+('operario1', 'pwd1', 'O');
 
 -- 
 -- Volcar la base de datos para la tabla `tbl_provincias`

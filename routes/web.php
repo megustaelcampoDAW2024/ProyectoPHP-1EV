@@ -20,3 +20,8 @@ Route::any('confirmarEliminarTarea/{id}', [Tareas::class, 'confirmarEliminarTare
 
 Route::any('eliminarFichResu/{id}', [Tareas::class, 'eliminarFichResu'])->where('id', '[0-9]+');
 Route::any('eliminarFoto/{id}', [Tareas::class, 'eliminarFoto'])->where('id', '[0-9]+');
+
+Route::any('administrarUsuarios', [Tareas::class, 'administrarUsuarios']);
+Route::any('crearUsuario', [Tareas::class, 'crearUsuario']);
+Route::any('editarUsuario/{id}', [Tareas::class, 'editarUsuario'])->where('id', '[0-9]+');
+Route::any('eliminarUsuario/{id}', [Tareas::class, 'eliminarUsuario'])->where('id', '[0-9]+');

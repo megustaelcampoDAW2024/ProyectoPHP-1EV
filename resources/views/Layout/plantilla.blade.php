@@ -16,6 +16,7 @@
                 <li><a href="<?=miUrl('listarTareas')?>">Listar Tareas</a></li>
                 @if ($_SESSION['status'] == 'A')
                     <li><a href="<?=miUrl('crearTarea')?>">Crear Tarea</a></li>
+                    <li><a href="<?=miUrl('administrarUsuarios')?>">Administrar Usuarios</a></li>
                 @endif
             </ul>
         </nav>

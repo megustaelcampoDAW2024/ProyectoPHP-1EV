@@ -243,4 +243,53 @@ class Tareas extends Controller
         myRedirect("logIn");
     }
 
+    public function administrarUsuarios()
+    {
+        if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
+            $usuarios = dbModel::getUsuarios();
+            return view('administrarUsuarios', compact('usuarios'));
+        } else {
+            myRedirect("logIn");
+        }
+    }
+
+    public function crearUsuario()
+    {
+        if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
+            if ($_POST) {
+                dbModel::crearUsuario($_POST['usuario'], $_POST['password'], $_POST['status']);
+                myRedirect("administrarUsuarios");
+            } else {
+                return view('crearUsuario');
+            }
+        } else {
+            myRedirect("logIn");
+        }
+    }
+
+    public function editarUsuario($id)
+    {
+        if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
+            if ($_POST) {
+                dbModel::editarUsuario($id, $_POST['usuario'], $_POST['password'], $_POST['status']);
+                myRedirect("administrarUsuarios");
+            } else {
+                $usuario = dbModel::getUsuarioById($id);
+                return view('editarUsuario', compact('usuario'));
+            }
+        } else {
+            myRedirect("logIn");
+        }
+    }
+
+    public function eliminarUsuario($id)
+    {
+        if ($this->sessionUsuario->isLogged() && $_SESSION['status'] == 'A') {
+            dbModel::eliminarUsuario($id);
+            myRedirect("administrarUsuarios");
+        } else {
+            myRedirect("logIn");
+        }
+    }
+
 }
