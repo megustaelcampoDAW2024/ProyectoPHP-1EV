@@ -86,56 +86,54 @@
                 <input type="text" class="form-control" name="fecha-creacion" id="fecha-creacion" value="{{($_POST) ? $utiles->valorPost('fecha-creacion') : (isset($task) ? $task['fecha_creacion'] : date('d-m-Y'))}}" readonly>
             </div>
                 
-            @if($_SESSION['status'] == 'O')
-                <div class="form-group">
-                    <label {{ ($_POST) ? $utiles->colorLabel('fecha-realizacion', $errores) : '' }} for="fecha-realizacion">
-                        @php $utiles->contenidoLabel('fecha-realizacion', 'Fecha de Realizacion de la Tarea', $errores) @endphp</label>
-                    <input type="text" class="form-control" name="fecha-realizacion" id="fecha-realizacion" value="{{ ($_POST) ? $utiles->valorPost('fecha-realizacion') : ($task['fecha_realizacion'] ?? '') }}">
-                </div>
+            <div class="form-group">
+                <label {{ ($_POST) ? $utiles->colorLabel('fecha-realizacion', $errores) : '' }} for="fecha-realizacion">
+                    @php $utiles->contenidoLabel('fecha-realizacion', 'Fecha de Realizacion de la Tarea', $errores) @endphp</label>
+                <input type="text" class="form-control" name="fecha-realizacion" id="fecha-realizacion" value="{{ ($_POST) ? $utiles->valorPost('fecha-realizacion') : ($task['fecha_realizacion'] ?? '') }}">
+            </div>
 
-                <div class="form-group">
-                    <label for="estado">Estado de la Tarea</label>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="estado" id="estado" value="B" {{ ($_POST) ? ($utiles->valorPost('estado') == 'B' ? 'checked' : '') : (isset($task) && $task['estado'] == 'B' ? 'checked' : '') }}>Esperando a Ser Aprobada
-                    </div>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="estado" id="estado" value="P" {{ ($_POST) ? ($utiles->valorPost('estado') == 'P' ? 'checked' : '') : (isset($task) && $task['estado'] == 'P' ? 'checked' : '') }}>Pendiente
-                    </div>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="estado" id="estado" value="R" 
-                        {{ ($_POST && ($utiles->valorPost('estado') == 'R' || $utiles->valorPost('estado') == '')) || (!$_POST && (!isset($task) || $task['estado'] == 'R' || $task['estado'] == '')) ? 'checked' : '' }}>Realizada
-                    </div>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="estado" id="estado" value="C" {{ ($_POST) ? ($utiles->valorPost('estado') == 'C' ? 'checked' : '') : (isset($task) && $task['estado'] == 'C' ? 'checked' : '') }}>Cancelada
-                    </div>
+            <div class="form-group">
+                <label for="estado">Estado de la Tarea</label>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="estado" id="estado" value="B" {{ ($_POST) ? ($utiles->valorPost('estado') == 'B' ? 'checked' : '') : (isset($task) && $task['estado'] == 'B' ? 'checked' : '') }}>Esperando a Ser Aprobada
                 </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="estado" id="estado" value="P" {{ ($_POST) ? ($utiles->valorPost('estado') == 'P' ? 'checked' : '') : (isset($task) && $task['estado'] == 'P' ? 'checked' : '') }}>Pendiente
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="estado" id="estado" value="R" 
+                    {{ ($_POST && ($utiles->valorPost('estado') == 'R' || $utiles->valorPost('estado') == '')) || (!$_POST && (!isset($task) || $task['estado'] == 'R' || $task['estado'] == '')) ? 'checked' : '' }}>Realizada
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="estado" id="estado" value="C" {{ ($_POST) ? ($utiles->valorPost('estado') == 'C' ? 'checked' : '') : (isset($task) && $task['estado'] == 'C' ? 'checked' : '') }}>Cancelada
+                </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="anotaciones-anteriores">Anotaciones Anteriores a la Tarea</label>
-                    <textarea class="form-control" name="anotaciones-anteriores" id="anotaciones-anteriores">{{ ($_POST) ? $utiles->valorPost('anotaciones-anteriores') : ($task['anotaciones_anteriores'] ?? '') }}</textarea>
-                </div>
+            <div class="form-group">
+                <label for="anotaciones-anteriores">Anotaciones Anteriores a la Tarea</label>
+                <textarea class="form-control" name="anotaciones-anteriores" id="anotaciones-anteriores">{{ ($_POST) ? $utiles->valorPost('anotaciones-anteriores') : ($task['anotaciones_anteriores'] ?? '') }}</textarea>
+            </div>
 
-                <div class="form-group">
-                    <label for="anotaciones-posteriores">Anotaciones Posteriores a la Tarea</label>
-                    <textarea class="form-control" name="anotaciones-posteriores" id="anotaciones-posteriores">{{ ($_POST) ? $utiles->valorPost('anotaciones-posteriores') : ($task['anotaciones_posteriores'] ?? '') }}</textarea>
-                </div>
+            <div class="form-group">
+                <label for="anotaciones-posteriores">Anotaciones Posteriores a la Tarea</label>
+                <textarea class="form-control" name="anotaciones-posteriores" id="anotaciones-posteriores">{{ ($_POST) ? $utiles->valorPost('anotaciones-posteriores') : ($task['anotaciones_posteriores'] ?? '') }}</textarea>
+            </div>
 
-                <div class="form-group">
-                    <label for="fich-resu">Fichero Resumen de las Tareas Realizadas</label>
-                    @if(isset($task['fich_resu']))
-                        <p><a href="{{miUrl("eliminarFichResu/{$id}")}}" class="btn btn-danger">ELIMINAR</a> Archivo actual: {{ $task['fich_resu'] }}</p>
-                    @endif
-                    <input type="file" class="form-control-file" name="fich-resu" id="fich-resu" accept=".pdf">
-                </div>
+            <div class="form-group">
+                <label for="fich-resu">Fichero Resumen de las Tareas Realizadas</label>
+                @if(isset($task['fich_resu']))
+                    <p><a href="{{miUrl("eliminarFichResu/{$id}")}}" class="btn btn-danger">ELIMINAR</a> Archivo actual: {{ $task['fich_resu'] }}</p>
+                @endif
+                <input type="file" class="form-control-file" name="fich-resu" id="fich-resu" accept=".pdf">
+            </div>
 
-                <div class="form-group">
-                    <label for="foto">Foto de las Tareas Realizadas</label>
-                    @if(isset($task['foto']))
-                        <p><a href="{{miUrl("eliminarFoto/{$id}")}}" class="btn btn-danger">ELIMINAR</a> Archivo actual: {{ $task['foto'] }}</p>
-                    @endif
-                    <input type="file" class="form-control-file" name="foto" id="foto" accept=".jpg, .jpeg, .png">
-                </div>
-            @endif
+            <div class="form-group">
+                <label for="foto">Foto de las Tareas Realizadas</label>
+                @if(isset($task['foto']))
+                    <p><a href="{{miUrl("eliminarFoto/{$id}")}}" class="btn btn-danger">ELIMINAR</a> Archivo actual: {{ $task['foto'] }}</p>
+                @endif
+                <input type="file" class="form-control-file" name="foto" id="foto" accept=".jpg, .jpeg, .png">
+            </div>
             <button type="submit" class="btn btn-primary">{{ isset($task) ? 'Actualizar' : 'Enviar' }}</button>
         </fieldset>
     </form>

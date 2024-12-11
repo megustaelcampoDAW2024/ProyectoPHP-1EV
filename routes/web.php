@@ -15,6 +15,7 @@ Route::any('logOut', [Tareas::class, 'logOut']);
 
 Route::any('detallesTarea/{id}', [Tareas::class, 'detallesTarea'])->where('id', '[0-9]+');
 Route::any('modificarTarea/{id}', [Tareas::class, 'modificarTarea'])->where('id', '[0-9]+');
+Route::any('completarTarea/{id}', [Tareas::class, 'completarTarea'])->where('id', '[0-9]+');
 Route::any('eliminarTarea/{id}', [Tareas::class, 'eliminarTarea'])->where('id', '[0-9]+');
 Route::any('confirmarEliminarTarea/{id}', [Tareas::class, 'confirmarEliminarTarea'])->where('id', '[0-9]+');
 

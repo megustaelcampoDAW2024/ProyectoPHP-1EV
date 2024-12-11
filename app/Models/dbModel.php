@@ -223,22 +223,26 @@ class dbModel extends Model
             (($task->poblacion !== null && $task->poblacion != '') ? "'$task->poblacion'" : "NULL") . ", " . 
             (($task->codigo_post !== null && $task->codigo_post != '') ? "'$task->codigo_post'" : "NULL") . ", " . 
             (($task->provincia !== null && $task->provincia != 0) ? "'$task->provincia'" : "NULL") . ", " . 
-            "NULL, " . 
+            (($task->estado !== null && $task->estado != '') ? "'$task->estado'" : "NULL") . ", " . 
             (($task->fecha_creacion !== null && $task->fecha_creacion != '') ? "'$task->fecha_creacion'" : "'1111-11-11'") . ", " . 
             (($task->operario !== null && $task->operario != 0) ? "'$task->operario'" : "NULL") . ", " . 
-            "NULL, NULL, NULL, NULL, NULL)";
-        $result = $db->conn->query($sql);
+            (($task->fecha_realizacion !== null && $task->fecha_realizacion != '') ? "'$task->fecha_realizacion'" : "NULL") . ", " . 
+            (($task->anotaciones_anteriores !== null && $task->anotaciones_anteriores != '') ? "'$task->anotaciones_anteriores'" : "NULL") . ", " . 
+            (($task->anotaciones_posteriores !== null && $task->anotaciones_posteriores != '') ? "'$task->anotaciones_posteriores'" : "NULL") . ", " . 
+            (($task->fich_resu !== null && $task->fich_resu != '') ? "'$task->fich_resu'" : "NULL") . ", " . 
+            (($task->foto !== null && $task->foto != '') ? "'$task->foto'" : "NULL") .  ")";
+            $result = $db->conn->query($sql);
         return $result;
     }
 
     /**
-     * Actualiza una tarea como administrador.
+     * Actualiza una tarea.
      *
      * @param object $updatedTask Objeto con los datos actualizados de la tarea.
      * @param int $id ID de la tarea a actualizar.
      * @return bool Resultado de la operación.
      */
-    public static function updateTaskAdmin($updatedTask, $id)
+    public static function updateTask($updatedTask, $id)
     {
         $db = SingletonDB::getInstance();
         $sql = 
@@ -263,8 +267,22 @@ class dbModel extends Model
             (($updatedTask->codigo_post !== null && $updatedTask->codigo_post != '') ? "'$updatedTask->codigo_post'" : "NULL") . ", " . 
             "provincia = " . 
             (($updatedTask->provincia !== null && $updatedTask->provincia != 0) ? "'$updatedTask->provincia'" : "NULL") . ", " . 
+            "estado = " . 
+            (($updatedTask->estado !== null && $updatedTask->estado != '') ? "'$updatedTask->estado'" : "NULL") . ", " .
+            "fecha_creacion = " . 
+            (($updatedTask->fecha_creacion !== null && $updatedTask->fecha_creacion != '') ? "'$updatedTask->fecha_creacion'" : "'1111-11-11'") . ", " .
             "operario_id = " . 
-            (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . "
+            (($updatedTask->operario !== null && $updatedTask->operario != 0) ? "'$updatedTask->operario'" : "NULL") . ", " .
+            "fecha_realizacion = " . 
+            (($updatedTask->fecha_realizacion !== null && $updatedTask->fecha_realizacion != '') ? "'$updatedTask->fecha_realizacion'" : "NULL") . ", " .
+            "anotaciones_anteriores = " . 
+            (($updatedTask->anotaciones_anteriores !== null && $updatedTask->anotaciones_anteriores != '') ? "'$updatedTask->anotaciones_anteriores'" : "NULL") . ", " .
+            "anotaciones_posteriores = " . 
+            (($updatedTask->anotaciones_posteriores !== null && $updatedTask->anotaciones_posteriores != '') ? "'$updatedTask->anotaciones_posteriores'" : "NULL") . ", " .
+            "fich_resu = " . 
+            (($updatedTask->fich_resu !== null && $updatedTask->fich_resu != '') ? "'$updatedTask->fich_resu'" : "NULL") . ", " .
+            "foto = " . 
+            (($updatedTask->foto !== null && $updatedTask->foto != '') ? "'$updatedTask->foto'" : "NULL") . "
             WHERE task_id = $id";
         $result = $db->conn->query($sql);
     }
@@ -276,23 +294,23 @@ class dbModel extends Model
      * @param int $id ID de la tarea a actualizar.
      * @return bool Resultado de la operación.
      */
-    public static function updateTaskOperario($updatedTask, $id)
+    public static function completeTask($completedTask, $id)
     {
         $db = SingletonDB::getInstance();
         $sql = 
         "UPDATE task 
         SET estado = " . 
-            (($updatedTask->estado !== null && $updatedTask->estado != '') ? "'$updatedTask->estado'" : "NULL") . ", " .
+            (($completedTask->estado !== null && $completedTask->estado != '') ? "'$completedTask->estado'" : "NULL") . ", " .
             "fecha_realizacion = " . 
-            (($updatedTask->fecha_realizacion !== null && $updatedTask->fecha_realizacion != '') ? "'$updatedTask->fecha_realizacion'" : "NULL") . ", " .
+            (($completedTask->fecha_realizacion !== null && $completedTask->fecha_realizacion != '') ? "'$completedTask->fecha_realizacion'" : "NULL") . ", " .
             "anotaciones_anteriores = " . 
-            (($updatedTask->anotaciones_anteriores !== null && $updatedTask->anotaciones_anteriores != '') ? "'$updatedTask->anotaciones_anteriores'" : "NULL") . ", " .
+            (($completedTask->anotaciones_anteriores !== null && $completedTask->anotaciones_anteriores != '') ? "'$completedTask->anotaciones_anteriores'" : "NULL") . ", " .
             "anotaciones_posteriores = " . 
-            (($updatedTask->anotaciones_posteriores !== null && $updatedTask->anotaciones_posteriores != '') ? "'$updatedTask->anotaciones_posteriores'" : "NULL") . ", " .
+            (($completedTask->anotaciones_posteriores !== null && $completedTask->anotaciones_posteriores != '') ? "'$completedTask->anotaciones_posteriores'" : "NULL") . ", " .
             "fich_resu = " . 
-            (($updatedTask->fich_resu !== null && $updatedTask->fich_resu != '') ? "'$updatedTask->fich_resu'" : "NULL") . ", " .
+            (($completedTask->fich_resu !== null && $completedTask->fich_resu != '') ? "'$completedTask->fich_resu'" : "NULL") . ", " .
             "foto = " . 
-            (($updatedTask->foto !== null && $updatedTask->foto != '') ? "'$updatedTask->foto'" : "NULL") . "
+            (($completedTask->foto !== null && $completedTask->foto != '') ? "'$completedTask->foto'" : "NULL") . "
             WHERE task_id = $id";
         echo $sql;
         $result = $db->conn->query($sql);
